@@ -1,0 +1,42 @@
+#infor-container {
+    width: 100%;
+    /* background: red; */
+    display: flex;
+    flex-direction: column;
+}
+
+#sub-container {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#sub-container>p {
+    margin-left: 10px;
+}
+
+#sub-container>p>a {
+    color: red;
+}
+
+#sub-container>input {
+    margin-top: 30px;
+    border: 1px solid black;
+    text-align: center;
+    color: black;
+    width: 300px;
+}
+
+#sub-container>input::placeholder {
+    text-align: center;
+}
+
+#update-btn {
+    width: 200px;
+    height: 40px;
+    color: white;
+    background: rgb(7, 164, 7);
+    margin-top: 30px;
+    margin-left: 240px;
+}

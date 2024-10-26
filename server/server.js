@@ -53,35 +53,6 @@ app.post('/student', async (req, res) => {
 
 })
 
-app.post('/teacher', async (req, res) => {
-    const { taikhoan, matkhau } = req.body
-
-    // console.log(taikhoan, matkhau);
-
-    // dataStore.push({ taikhoan, matkhau })
-
-    try {
-        await sql.connect(config);
-        console.log('Kết nối thành công đến SQL Server');
-
-        const result = await sql.query(`SELECT TaiKhoan, MatKhau FROM GiangVien WHERE TaiKhoan = '${taikhoan}' AND MatKhau = '${matkhau}'`);
-
-        // console.log(result.recordset);
-
-        // console.log(result.recordset);
-        // console.log(result.recordset.length);
-
-        res.status(200).json({
-            check: result.recordset.length
-        })
-
-    }
-    catch (err) {
-        console.log(err);
-    }
-
-})
-
 app.post('/admin', async (req, res) => {
     const { taikhoan, matkhau } = req.body
 
@@ -191,6 +162,55 @@ app.post('/studentMark', async (req, res) => {
 })
 
 
+app.post('/teacher', async (req, res) => {
+    const { taikhoan, matkhau } = req.body
+
+    // console.log(taikhoan, matkhau);
+
+    // dataStore.push({ taikhoan, matkhau })
+
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        const result = await sql.query(`SELECT *  FROM GiangVien WHERE TaiKhoan = '${taikhoan}' AND MatKhau = '${matkhau}'`);
+
+        // console.log(result.recordset);
+
+        // console.log(result.recordset);
+        // console.log(result.recordset.length);
+
+        res.status(200).json({
+            check: result.recordset.length,
+            teacher: result.recordset
+        })
+
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+})
+
+app.post('/update_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id, name, phone, email } = req.body
+
+        const result = await sql.query(`UPDATE GiangVien SET TenGV = '${name}', SoDienThoai = '${phone}', Email = '${email}' WHERE MaGV = '${id}'`);
+
+        res.status(200).json({
+            resData: result.recordset
+        })
+
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+})
 
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);
