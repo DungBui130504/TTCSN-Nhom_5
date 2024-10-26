@@ -1,0 +1,87 @@
+#main-background {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #a1ffce, #faffd1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#student-dashboard {
+    width: 90%;
+    height: 85%;
+    background: #F8F6F7;
+    border-radius: 50px;
+    position: relative;
+}
+
+#workplace {
+    width: 85%;
+    height: 100%;
+    background: #FFFFFF;
+    border-radius: 50px;
+    position: absolute;
+    right: 0;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#content {
+    width: 100%;
+    height: 10%;
+    /* background: yellow; */
+    text-align: center;
+    margin-top: 30px;
+    border-bottom: 1px solid olive;
+}
+
+#nav {
+    width: 15%;
+    height: 100%;
+    position: absolute;
+    /* background: wheat; */
+    border-radius: 0px 50px 50px 0px;
+    border-right: 5px solid rgb(229, 235, 217);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-bottom: 50px;
+}
+
+#head {
+    height: 30%;
+    width: 100%;
+    border-radius: 0px 50px 0px 0px;
+    /* background: violet; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    background: url(../../../images/logo.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-bottom: 1px solid black;
+}
+
+#status {
+    height: 50px;
+    width: 100%;
+    background: rgb(231, 245, 241);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#status:hover {
+    border-right: 4px solid rgb(0, 146, 126);
+}
+
+#tag {
+    line-height: 50px;
+    margin: 0;
+    cursor: pointer;
+}

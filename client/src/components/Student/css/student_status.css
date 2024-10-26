@@ -1,0 +1,158 @@
+#main-workplace {
+    height: 80%;
+    width: 100%;
+    /* background: yellowgreen; */
+    margin-top: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#input {
+    height: 88%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background: hotpink; */
+}
+
+.input-form {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.label {
+    width: 100px;
+    height: 30px;
+    margin-right: 10px;
+    text-align: left;
+    /* background-color: blue; */
+}
+
+.label.email {
+    width: 50px;
+}
+
+.id-data {
+    width: 180px;
+    height: 30px;
+    text-align: center;
+    /* background-color: yellowgreen; */
+}
+
+.name-data {
+    width: 180px;
+    height: 30px;
+    text-align: center;
+    /* background-color: yellowgreen; */
+}
+
+.phone-data {
+    width: 180px;
+    height: 30px;
+    text-align: center;
+    /* background-color: yellowgreen; */
+}
+
+.email-data {
+    width: 250px;
+    height: 30px;
+    text-align: center;
+    /* background-color: yellowgreen; */
+}
+
+#arrow {
+    height: 40px;
+    width: 60px;
+    background: url(../../../images/arrow.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 30px;
+}
+
+.input-box {
+    border: 1px solid black;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0;
+    margin-top: 5px;
+    margin-left: 30px;
+    width: 300px;
+}
+
+.input-box:focus {
+    border: none;
+}
+
+/* .ID-input {
+    margin-left: 40px;
+} */
+
+.name-input {
+    margin-left: 40px;
+    color: black;
+}
+
+.phone-input {
+    margin-left: 40px;
+    color: black;
+}
+
+.email-input {
+    color: black;
+    margin-left: 25px;
+}
+
+#btn-box {
+    display: flex;
+    transition: 10s;
+    height: 80px;
+    margin-top: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn-box:hover>#student-submit {
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#student-submit {
+    /* margin-top: 40px; */
+    width: 200px;
+    height: 40px;
+    border: none;
+    background: rgb(227, 40, 11);
+    color: white;
+    border: none;
+    transition: 1s;
+    border-radius: 15px;
+}
+
+#student-submit:hover {
+    /* transform: rotate(10deg); */
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.side {
+    height: 40px;
+    width: 40px;
+    /* background: url(../../images/round_arrow.png); */
+    background-size: contain;
+    /* margin: 40px 0 0; */
+    transition: 5s;
+}
+
+#lamp {
+    height: 88%;
+    width: 20%;
+    background: url(../../../images/light.gif);
+    /* background-color: yellowgreen; */
+    background-repeat: no-repeat;
+    background-size: contain;
+}
