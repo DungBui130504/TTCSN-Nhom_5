@@ -68,7 +68,7 @@ const Teacher = () => {
             </div>
             <div id={style['teacher-workplace']}>
                 <div id={style["workplace-header"]}>
-                    <p id={style["teacher-name"]}>{teachername}</p>
+                    <p id={style["teacher-name"]}>Giảng viên: {teachername}</p>
                 </div>
                 <hr />
                 <Outlet />

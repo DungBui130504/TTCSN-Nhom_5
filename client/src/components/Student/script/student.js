@@ -42,15 +42,14 @@ function Student() {
         return () => clearTimeout(timer); // Dọn dẹp timeout khi component unmount
     }, [index, isDeleting, speed, text]);
 
-    useEffect(() => {
-        const getStudentStatus = async () => {
-            const myResponse = await axios.post('http://localhost:8000/studentID', { tk, mk });
-            // console.log(myResponse.data.resData[0].MaSV);
-            localStorage.setItem('id', myResponse.data.resData[0].MaSV)
-        }
+    // useEffect(() => {
+    //     const getStudentStatus = async () => {
+    //         const myResponse = await axios.post('http://localhost:8000/studentID', { tk, mk });
+    //         // console.log(myResponse.data.resData[0].MaSV);
+    //     }
 
-        getStudentStatus()
-    }, [])
+    //     getStudentStatus()
+    // }, [])
 
     const handleSignOut = () => {
         setTimeout(() => {

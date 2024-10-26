@@ -54,7 +54,7 @@ function App() {
           <Route path='teacher_subject' element={<SubjectList />} />
 
           <Route path='teacher_timetable' element={<TeacherTimeTable />} />
-          
+
           <Route path='teacher_update_mark' element={<UpdateMark />} />
 
         </Route>

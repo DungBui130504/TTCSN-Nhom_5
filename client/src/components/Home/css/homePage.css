@@ -88,7 +88,7 @@ input {
 .tk:focus,
 .mk:focus {
     outline: none;
-    transform: rotate(-5deg);
+    /* transform: rotate(-5deg); */
 }
 
 .tk:hover .tk-label {

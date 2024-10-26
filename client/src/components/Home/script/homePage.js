@@ -71,6 +71,7 @@ function HomePage({ sendData }) {
     const [taikhoan, setTaiKhoan] = useState('no')
     const [matkhau, setMatKhau] = useState('no')
     const [user, setUser] = useState(null)
+    const [id, setID] = useState('')
 
     const handleSelectChange = (event) => {
         const selectedValue = event.target.value;
@@ -90,7 +91,10 @@ function HomePage({ sendData }) {
                 case 0:
                     {
                         const response1 = await axios.post('http://localhost:8000/student', { taikhoan, matkhau });
-                        // console.log(`Du lieu tu bang SinhVien: ${response1.data.check}`);
+                        // console.log(`Du lieu tu bang SinhVien: ${response1.data.student}`);
+                        localStorage.setItem('id', response1.data.student[0].MaSV)
+                        // console.log(response1.data.student[0].MaSV);
+                        
 
                         if (response1.data.check == 1) {
                             console.log('Dang nhap tai khoan sinh vien thanh cong!');
@@ -106,7 +110,8 @@ function HomePage({ sendData }) {
                 case 1:
                     {
                         const response2 = await axios.post('http://localhost:8000/teacher', { taikhoan, matkhau });
-                        // console.log(`Du lieu tu bang GiangVien: ${response2.data.check}`);
+                        // console.log(response2.data.teacher[0].MaGV);
+                        localStorage.setItem('id', response2.data.teacher[0].MaGV)
 
                         if (response2.data.check == 1) {
                             console.log('Dang nhap tai khoan giang vien thanh cong!');
@@ -122,6 +127,7 @@ function HomePage({ sendData }) {
                     {
                         const response3 = await axios.post('http://localhost:8000/admin', { taikhoan, matkhau });
                         // console.log(`Du lieu tu bang Adminn: ${response3.data.check}`);
+                        localStorage.setItem('id', response3.data.admin[0].MaAdmin)
 
                         if (response3.data.check == 1) {
                             console.log('Dang nhap tai khoan admin thanh cong!');
@@ -139,6 +145,13 @@ function HomePage({ sendData }) {
             console.error('Có lỗi xảy ra:', error);
         }
 
+        // const getStudentStatus = async () => {
+        //     const myResponse = await axios.post('http://localhost:8000/studentID', { taikhoan, matkhau });
+        //     console.log(myResponse.data);
+        //     setID('')
+        // }
+
+        // getStudentStatus();
     };
 
     return (

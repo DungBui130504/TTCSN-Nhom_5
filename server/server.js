@@ -37,13 +37,14 @@ app.post('/student', async (req, res) => {
 
         console.log('Kết nối thành công đến SQL Server');
 
-        const result = await sql.query(`SELECT TaiKhoan, MatKhau FROM SinhVien WHERE TaiKhoan = '${taikhoan}' AND MatKhau = '${matkhau}'`);
+        const result = await sql.query(`SELECT TaiKhoan, MatKhau, MaSV FROM SinhVien WHERE TaiKhoan = '${taikhoan}' AND MatKhau = '${matkhau}'`);
 
         // console.log(result.recordset);
         // console.log(result.recordset.length);
 
         res.status(200).json({
-            check: result.recordset.length
+            check: result.recordset.length,
+            student: result.recordset
         })
 
     }
@@ -72,7 +73,8 @@ app.post('/admin', async (req, res) => {
         // console.log(result.recordset.length);
 
         res.status(200).json({
-            check: result.recordset.length
+            check: result.recordset.length,
+            admin: result.recordset
         })
 
     }
@@ -149,11 +151,31 @@ app.post('/studentMark', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`SELECT * FROM Diem WHERE MaSV = '${id}'`);
+        const result = await sql.query(`SELECT Diem.MaSV, Diem.TinChi, Diem.TenSV, Diem.MaLop, Diem.TenLop, Diem.MaMonHoc, Diem.TenMonHoc, Diem.DiemTx1, Diem.DiemTx2, Diem.DiemGiuaKy, Diem.DiemCuoiKy, (HsTx1 * DiemTx1 + HsTx2 * DiemTx2 + DiemGiuaKy * HsGiuaKy + DiemCuoiKy * HsCuoiKy) AS N'DiemTichLuyMon' FROM Diem JOIN HeSoDiem ON Diem.MaMonHoc = HeSoDiem.MaMonHoc WHERE Diem.MaSV=${id}`);
 
         res.status(200).json({
             resData: result.recordset
         })
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+})
+
+app.post('/getSubject', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body
+
+        const result = await sql.query(`select * from SinhVienTrongLop where MaSV=${id}`);
+
+        res.status(200).json({
+            resData: result.recordset
+        })
+
     }
     catch (err) {
         console.log(err);
@@ -200,6 +222,26 @@ app.post('/update_teacher', async (req, res) => {
         let { id, name, phone, email } = req.body
 
         const result = await sql.query(`UPDATE GiangVien SET TenGV = '${name}', SoDienThoai = '${phone}', Email = '${email}' WHERE MaGV = '${id}'`);
+
+        res.status(200).json({
+            resData: result.recordset
+        })
+
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+})
+
+app.post('/subject_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body
+
+        const result = await sql.query(`SELECT DISTINCT S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc, COUNT(DISTINCT S.MaSV) AS SoLuong FROM SinhVienTrongLop S JOIN ThoiKhoaBieu T ON S.MaMonHoc = T.MaMonHoc WHERE S.MaGV = '${id}' GROUP BY S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc`);
 
         res.status(200).json({
             resData: result.recordset

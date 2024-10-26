@@ -3,3 +3,11 @@
     font-size: 20px;
     text-align: center;
 }
+
+td {
+    padding: 30px 10px;
+}
+
+thead {
+    background: goldenrod;
+}
