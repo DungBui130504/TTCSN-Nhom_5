@@ -5,10 +5,10 @@ import "../css/subject.css"
 function Subject() {
     const [subject, setSubject] = useState([])
 
-    const id = localStorage.getItem('id')
+    const [id, setID] = useState(localStorage.getItem('id'))
 
     console.log(id);
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,8 +22,8 @@ function Subject() {
 
     return (
         <div className='subject-container'>
-            <p id='sub-title'>Bảng môn học</p>
-            <table border={2} style={{ borderCollapse: 'collapse', width: '100%', textAlign: 'center', marginTop: '20px' }}>
+            <p id='sub-title'>BẢNG MÔN HỌC</p>
+            <table border={0} style={{ borderCollapse: 'collapse', width: '100%', textAlign: 'center', marginTop: '20px' }}>
                 <thead>
                     <th>Mã Ngành</th>
                     <th>Tên ngành</th>
@@ -35,8 +35,124 @@ function Subject() {
                 </thead>
 
                 <tbody>
-                    {subject.map(sub => (
-                        <tr key={sub.MaNganh}>
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
+                            <td>{sub.MaNganh}</td>
+                            <td>{sub.TenNganh}</td>
+                            <td>{sub.MaMonHoc}</td>
+                            <td>{sub.TenMonHoc}</td>
+                            <td>{sub.MaLop}</td>
+                            <td>{sub.TenLop}</td>
+                            <td>{sub.TenGV}</td>
+                        </tr>
+                    ))}
+
+                    {subject.map((sub, index) => (
+                        <tr key={sub.MaNganh}
+                            style={{
+                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                            }}
+                        >
                             <td>{sub.MaNganh}</td>
                             <td>{sub.TenNganh}</td>
                             <td>{sub.MaMonHoc}</td>

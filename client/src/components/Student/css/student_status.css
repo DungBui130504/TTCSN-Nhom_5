@@ -1,21 +1,27 @@
 #main-workplace {
     height: 80%;
     width: 100%;
-    /* background: yellowgreen; */
     margin-top: 20px;
     padding: 20px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
 }
 
 #input {
     height: 88%;
-    width: 70%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* background: hotpink; */
+    background: #31c381;
+    border-radius: 50px;
+    color: white;
+    border-bottom-right-radius: 40%;
+    transition: 0.5s;
+}
+
+#input:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 0px;
 }
 
 .input-form {
@@ -74,35 +80,42 @@
 }
 
 .input-box {
-    border: 1px solid black;
+    border: 1px solid white;
     border-radius: 20px;
     text-align: center;
     margin: 0;
     margin-top: 5px;
     margin-left: 30px;
     width: 300px;
+    color: rgb(244, 244, 244);
 }
 
 .input-box:focus {
-    border: none;
+    outline: none;
+    box-shadow: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    background: white;
+    color: black;
 }
 
-/* .ID-input {
-    margin-left: 40px;
-} */
+.input-box:focus::placeholder {
+    color: black;
+}
+
+.input-box::placeholder {
+    color: white;
+    opacity: 0.5;
+}
 
 .name-input {
     margin-left: 40px;
-    color: black;
 }
 
 .phone-input {
     margin-left: 40px;
-    color: black;
 }
 
 .email-input {
-    color: black;
     margin-left: 25px;
 }
 
@@ -148,11 +161,73 @@
     transition: 5s;
 }
 
-#lamp {
-    height: 88%;
-    width: 20%;
-    background: url(../../../images/light.gif);
-    /* background-color: yellowgreen; */
-    background-repeat: no-repeat;
-    background-size: contain;
+#input2 {
+    height: 75%;
+    width: 30%;
+    background: #35908b;
+    margin-left: 50px;
+    border-radius: 50px;
+    /* border-bottom-left-radius: 30%; */
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#input2:hover {
+    border-radius: 0px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+#input2>p {
+    font-size: 15px;
+    color: white;
+    margin-top: 20px;
+}
+
+#input2>input {
+    width: 250px;
+    height: 40px;
+    border: 1px solid white;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+#input2>input:focus {
+    outline: none;
+    box-shadow: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    background: white;
+    color: black;
+}
+
+#label1 {
+    margin-top: 30px;
+    margin-left: -40px;
+    margin-bottom: 10px;
+}
+
+#label2 {
+    margin-left: -40px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+#account-submit {
+    width: 200px;
+    height: 40px;
+    border: none;
+    background: rgb(227, 11, 105);
+    color: white;
+    border: none;
+    transition: 1s;
+    border-radius: 15px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+#account-submit:hover {
+    border-radius: 0;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

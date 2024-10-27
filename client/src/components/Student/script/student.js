@@ -4,15 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 
 function Student() {
-    let tk = localStorage.getItem('taikhoanSV')
-    let mk = localStorage.getItem('matkhausv')
+    let taikhoan = localStorage.getItem('taikhoanSV')
+    let matkhau = localStorage.getItem('matkhausv')
     const navigate = useNavigate();
 
     const [displayText, setDisplayText] = useState(''); // Chuỗi hiện tại trong h1
     const [isDeleting, setIsDeleting] = useState(false); // Trạng thái xóa
     const [index, setIndex] = useState(0); // Vị trí hiện tại trong chuỗi
     const [speed, setSpeed] = useState(200); // Tốc độ hiển thị
-    const text = 'Welcome to student workplace      '; // Nội dung cần hiện lên từng chữ một
+    const text = 'TRANG HOẠT ĐỘNG CỦA SINH VIÊN          '; // Nội dung cần hiện lên từng chữ một
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -42,14 +42,14 @@ function Student() {
         return () => clearTimeout(timer); // Dọn dẹp timeout khi component unmount
     }, [index, isDeleting, speed, text]);
 
-    // useEffect(() => {
-    //     const getStudentStatus = async () => {
-    //         const myResponse = await axios.post('http://localhost:8000/studentID', { tk, mk });
-    //         // console.log(myResponse.data.resData[0].MaSV);
-    //     }
+    useEffect(() => {
+        const getStudentStatus = async () => {
+            const myResponse = await axios.post('http://localhost:8000/student', { taikhoan, matkhau });
+            // console.log(myResponse.data.student);
+        }
 
-    //     getStudentStatus()
-    // }, [])
+        getStudentStatus()
+    }, [])
 
     const handleSignOut = () => {
         setTimeout(() => {
@@ -80,25 +80,33 @@ function Student() {
                     <div id='head'>
                         <div id='logo'></div>
                     </div>
+                    <p id='mini-title'>MENU</p>
                     <div id='status' onClick={update}>
+                        <div id='icon1'></div>
                         <a id='tag'>Cập nhật thông tin</a>
                     </div>
                     <div id='status' onClick={mark}>
+                        <div id='icon2'></div>
                         <a id='tag'>Xem điểm</a>
                     </div>
                     <div id='status' onClick={subject}>
+                        <div id='icon3'></div>
                         <a id='tag'>Xem môn học</a>
                     </div>
                     <div id='status' onClick={timetable}>
+                        <div id='icon4'></div>
                         <a id='tag'>Xem thời khóa biểu</a>
                     </div>
                     <div id='status' className='signOut' onClick={handleSignOut}>
+                        <div id='icon5'></div>
                         <a id='tag'>Đăng xuất</a>
                     </div>
                 </div>
                 <div id='workplace'>
                     <div id='content'>
-                        <h1 className='content'>{displayText}</h1>
+                        <h1 className='content'>
+                            <p>{displayText}</p>
+                        </h1>
                     </div>
                     <Outlet />
                 </div>

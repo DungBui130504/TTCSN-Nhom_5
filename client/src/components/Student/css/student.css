@@ -1,83 +1,102 @@
 #main-background {
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, #a1ffce, #faffd1);
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(to right, #eb3349, #f45c43); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 #student-dashboard {
-    width: 90%;
-    height: 85%;
-    background: #F8F6F7;
-    border-radius: 50px;
+    width: 95%;
+    height: 90%;
     position: relative;
+    border-radius: 50px;
 }
 
 #workplace {
-    width: 85%;
+    width: 83%;
     height: 100%;
-    background: #FFFFFF;
-    border-radius: 50px;
     position: absolute;
     right: 0;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    top: 0;
+    background: #F3F5F7;
+    border-bottom-right-radius: 50px;
+    border-top-right-radius: 50px;
 }
 
 #content {
     width: 100%;
     height: 10%;
-    /* background: yellow; */
     text-align: center;
-    margin-top: 30px;
-    border-bottom: 1px solid olive;
+    padding-top: 15px;
+    border-bottom: 1px solid rgb(211, 211, 211);
 }
 
 #nav {
-    width: 15%;
+    width: 17%;
     height: 100%;
     position: absolute;
-    /* background: wheat; */
-    border-radius: 0px 50px 50px 0px;
-    border-right: 5px solid rgb(229, 235, 217);
     display: flex;
-    justify-content: space-around;
     flex-direction: column;
-    padding-bottom: 50px;
+    align-items: center;
+    gap: 20px;
+    background: white;
+    border-top-left-radius: 45%;
+    border-bottom-left-radius: 50px;
 }
 
 #head {
-    height: 30%;
+    height: 19.5%;
     width: 100%;
-    border-radius: 0px 50px 0px 0px;
-    /* background: violet; */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 50px;
+}
+
+#mini-title {
+    margin-right: 100px;
+    font-family: "Teko", sans-serif;
+    font-size: 30px;
 }
 
 #logo {
-    height: 130px;
-    width: 130px;
-    border-radius: 50%;
-    background: url(../../../images/logo.gif);
+    background: url('../../../images/student-dash-board.gif');
     background-repeat: no-repeat;
-    background-size: contain;
-    border-bottom: 1px solid black;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+
 }
 
 #status {
     height: 50px;
-    width: 100%;
-    background: rgb(231, 245, 241);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 70%;
+    text-align: center;
+    transition: 0.5s;
+    border-radius: 30px;
+}
+
+#status>a {
+    color: rgb(105, 105, 105);
+    transition: 0s;
+    font-size: 14px;
+}
+
+#status>#icon1 {
+    width: 0px;
+    height: 0px;
 }
 
 #status:hover {
-    border-right: 4px solid rgb(0, 146, 126);
+    background: #E8DCDB;
+    border-left: 8px solid rgb(228, 89, 2);
+}
+
+#status:hover>a {
+    color: #7A3934;
+    font-weight: bold;
 }
 
 #tag {

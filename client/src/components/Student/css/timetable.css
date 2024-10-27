@@ -1,7 +1,16 @@
-#time-title {
+#time-table-container {
     margin-top: 10px;
     font-size: 20px;
     text-align: center;
+}
+
+#myTable {
+    border-color: #DAA520;
+}
+
+#myTable>tr>td {
+    height:150px;
+    width: 100px;
 }
 
 td {

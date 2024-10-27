@@ -1,5 +1,28 @@
+.subject-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: auto;
+    max-width: 100%;
+    max-height: 83%;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 #sub-title {
     margin-top: 10px;
+    padding-top: 10px;
     font-size: 20px;
-    text-align: center;
+    font-family: "Libre Franklin", sans-serif;
+}
+
+.subject-container>th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-right: 1px solid blanchedalmond;
+}
+
+.subject-container>table>tbody>tr>td {
+    border-bottom: 1px solid rgb(215, 197, 233);
+    font-size: 14px;
 }

@@ -15,7 +15,7 @@ const Admin = () => {
                 <button className="dashboard-button">Thêm Giảng Viên</button>
                 <button className="dashboard-button">Sửa Giảng Viên</button>
                 <button className="dashboard-button">Xóa Giảng Viên</button>
-                <button className="dashboard-button">Sửa Điểm</button>
+                <button className="dashboard-button">Xem Điểm</button>
                 <button className="dashboard-button">Đăng Xuất</button>
             </div>
         </div>
