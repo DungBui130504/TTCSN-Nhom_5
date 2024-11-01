@@ -128,26 +128,57 @@ app.post('/studentStatus2', async (req, res) => {
     }
 })
 
+// app.post('/updateStudent', async (req, res) => {
+//     try {
+//         await sql.connect(config);
+//         console.log('Kết nối thành công đến SQL Server');
+
+//         let { id, Name, Phone, Email, taikhoan, matkhau } = req.body
+
+//         const result = await sql.query(`UPDATE SinhVien SET TenSV = N'${Name}', SoDienThoai = '${Phone}', Email = '${Email}' WHERE MaSV = '${id}'`);
+
+
+//         res.status(200).json({
+//             resData: result.recordset
+//         })
+
+//     }
+//     catch (err) {
+//         console.log(err);
+
+//     }
+// })
+
 app.post('/updateStudent', async (req, res) => {
     try {
-        await sql.connect(config);
+        // Kết nối với SQL Server
+        const pool = await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        let { id, Name, Phone, Email, taikhoan, matkhau } = req.body
+        // Lấy dữ liệu từ body của request
+        let { id, Name, Phone, Email, taikhoan, matkhau } = req.body;
 
-        const result = await sql.query(`UPDATE SinhVien SET TenSV = '${Name}', SoDienThoai = '${Phone}', Email = '${Email}' WHERE MaSV = '${id}'`);
+        // Sử dụng Prepared Statements với các biến input
+        const result = await pool.request()
+            .input('Name', sql.NVarChar, Name) // Dùng NVarChar để hỗ trợ Unicode
+            .input('Phone', sql.VarChar, Phone)
+            .input('Email', sql.VarChar, Email)
+            .input('id', sql.VarChar, id)
+            .query(`UPDATE SinhVien SET TenSV = @Name, SoDienThoai = @Phone, Email = @Email WHERE MaSV = @id`);
 
-
+        // Trả về kết quả thành công
         res.status(200).json({
             resData: result.recordset
-        })
-
+        });
     }
     catch (err) {
-        console.log(err);
-
+        console.log('Lỗi khi cập nhật dữ liệu:', err);
+        res.status(500).json({
+            message: 'Cập nhật dữ liệu không thành công',
+            error: err
+        });
     }
-})
+});
 
 app.post('/updateStudentAccount', async (req, res) => {
     try {

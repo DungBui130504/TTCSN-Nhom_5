@@ -19,4 +19,5 @@ td {
 
 thead {
     background: goldenrod;
+    border: 1px solid rgb(250, 213, 119);
 }

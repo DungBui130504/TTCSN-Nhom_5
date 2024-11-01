@@ -6,7 +6,9 @@ const config = {
     "server": "localhost", // Server IP address
     "database": "Quanlisinhvien", // Database name
     "options": {
-        "encrypt": false // Disable encryption
+        encrypt: false, // Không mã hóa
+        enableArithAbort: true, // Cấu hình SQL Server yêu cầu
+        charset: 'utf8' // Đảm bảo mã hóa UTF-8
     },
     // "driver": 'msnodesqlv8'
 };

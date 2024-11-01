@@ -222,13 +222,13 @@ function Timetable() {
 
             for (let i = 0; i < chunhat.length; i++) {
                 if (chunhat[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[7].textContent += chunhat[i].TenLop + '\n';
+                    myTable.rows[0].cells[7].innerHTML += `${chunhat[i].TenLop} <br>`;
                 }
                 if (chunhat[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[7].textContent += chunhat[i].TenLop + '\n';
+                    myTable.rows[1].cells[7].innerHTML += chunhat[i].TenLop + '<br>';
                 }
                 if (chunhat[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[7].textContent += chunhat[i].TenLop + '\n';
+                    myTable.rows[2].cells[7].innerHTML += chunhat[i].TenLop + '<br>';
                 }
             }
         }
