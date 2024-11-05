@@ -163,7 +163,7 @@ app.post('/updateStudent', async (req, res) => {
             .input('Name', sql.NVarChar, Name) // Dùng NVarChar để hỗ trợ Unicode
             .input('Phone', sql.VarChar, Phone)
             .input('Email', sql.VarChar, Email)
-            .input('id', sql.VarChar, id)
+            .input('id', sql.Int, id)
             .query(`UPDATE SinhVien SET TenSV = @Name, SoDienThoai = @Phone, Email = @Email WHERE MaSV = @id`);
 
         // Trả về kết quả thành công
@@ -311,14 +311,14 @@ app.post('/teacher', async (req, res) => {
 
 })
 
-app.post('/update_teacher', async (req, res) => {
+app.post('/getSumStudent', async (req, res) => {
+    const { ID } = req.body
+
     try {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        let { id, name, phone, email } = req.body
-
-        const result = await sql.query(`UPDATE GiangVien SET TenGV = '${name}', SoDienThoai = '${phone}', Email = '${email}' WHERE MaGV = '${id}'`);
+        const result = await sql.query(`SELECT COUNT(DISTINCT L.MaSV) AS SoLuongSinhVienMoiLop FROM SinhVienTrongLop L JOIN Lop o ON L.MaLop = o.MaLop WHERE MaGV = '${ID}' GROUP BY o.MaLop, o.TenLop;`);
 
         res.status(200).json({
             resData: result.recordset
@@ -327,9 +327,37 @@ app.post('/update_teacher', async (req, res) => {
     }
     catch (err) {
         console.log(err);
-
     }
+
 })
+
+app.post('/update_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id, name, phone, email } = req.body;
+
+        // Khởi tạo một yêu cầu mới
+        const request = new sql.Request();
+
+        const result = await request
+            .input('Name', sql.NVarChar, name) // Dùng NVarChar để hỗ trợ Unicode
+            .input('Phone', sql.VarChar, phone)
+            .input('Email', sql.VarChar, email)
+            .input('id', sql.VarChar, id)
+            .query(`UPDATE GiangVien SET TenGV = @Name, SoDienThoai = @Phone, Email = @Email WHERE MaGV = @id`);
+
+        res.status(200).json({
+            resData: result.rowsAffected // Cập nhật để trả về số hàng bị ảnh hưởng
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Cập nhật thất bại' });
+    }
+});
+
 
 app.post('/subject_teacher', async (req, res) => {
     try {
@@ -344,6 +372,45 @@ app.post('/subject_teacher', async (req, res) => {
             resData: result.recordset
         })
 
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+})
+
+app.post('/teacher_timetable', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body
+
+        const result = await sql.query(`SELECT DISTINCT SinhVienTrongLop.MaLop, SinhVienTrongLop.TenLop, ThoiKhoaBieu.Thu1, ThoiKhoaBieu.Thu2, ThoiKhoaBieu.TenLop, SinhVienTrongLop.MaGV, SinhVienTrongLop.TenGV, ThoiKhoaBieu.ThoiGianHoc FROM SinhVienTrongLop JOIN ThoiKhoaBieu ON SinhVienTrongLop.MaLop = ThoiKhoaBieu.MaLop WHERE SinhVienTrongLop.MaGV = 'gv01'`);
+
+        res.status(200).json({
+            resData: result.recordset
+        })
+
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+})
+
+app.post('/search_student', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { studentId, classId, id } = req.body
+
+        const result = await sql.query(`select MaGV, MaSV, TenSV, TenMonHoc, TinChi, DiemTx1, DiemTx2, DiemGiuaKy, TenLop, MaLop from Diem where MaSV='${studentId}' and MaLop='${classId}' and MaGV = '${id}' `);
+
+        res.status(200).json({
+            resData: result.recordset
+        })
     }
     catch (err) {
         console.log(err);

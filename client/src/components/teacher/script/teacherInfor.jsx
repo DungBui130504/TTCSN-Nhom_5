@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import style from '../css/teacherInfor.module.css';
-import axios from 'axios'
+import axios from 'axios';
 
 function TeacherInfor() {
     const [name, setName] = useState('')
@@ -10,6 +10,10 @@ function TeacherInfor() {
     const [check, setCheck] = useState(false)
     let taikhoan = localStorage.getItem('taikhoanSV')
     let matkhau = localStorage.getItem('matkhausv')
+    const ID = localStorage.getItem('id')
+    const [sum, setSum] = useState(0)
+    const [sum2, setSum2] = useState(0)
+    let count = 0;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,6 +27,32 @@ function TeacherInfor() {
 
         fetchData();
     }, [check])
+
+    useEffect(() => {
+        const fetchData2 = async () => {
+            // console.log('ID:', ID); 
+            if (ID) {
+                let response1 = await axios.post('http://localhost:8000/getSumStudent', { ID });
+                // console.log(response1.data.resData);
+                setSum2(response1.data.resData.length);
+                for (let i = 0; i < response1.data.resData.length; i++) {
+                    count += response1.data.resData[i].SoLuongSinhVienMoiLop;
+                    // console.log(count);
+                }
+                setSum(count);
+                count = 0;
+            } else {
+                console.error('ID không hợp lệ');
+            }
+        }
+
+        fetchData2()
+    }, [])
+
+    useEffect(() => {
+        // console.log("Giá trị sum đã cập nhật:", sum);
+        // console.log(sum2);
+    }, [count]);
 
     const handleUpdate = async () => {
         let response = await axios.post('http://localhost:8000/update_teacher', { id, name, phone, email });
@@ -48,8 +78,10 @@ function TeacherInfor() {
                     <p>Email <a>*</a> </p>
                     <input type="text" placeholder='Nhập email mới' value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
+                <button id={style["update-btn"]} onClick={handleUpdate}>Cập nhật thông tin</button>
             </div>
-            <button id={style["update-btn"]} onClick={handleUpdate}>Cập nhật thông tin</button>
+            <div className={style["box1"]}><p>Số lượng sinh viên đang giảng dạy: {sum}</p></div>
+            <div className={style["box2"]}>Số lượng lớp học hiện có: {sum2}</div>
         </>
     )
 }

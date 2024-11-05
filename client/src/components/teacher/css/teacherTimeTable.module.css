@@ -3,3 +3,27 @@
     font-size: 20px;
     text-align: center;
 }
+
+#time-table-container {
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+
+}
+
+.teacherTable {
+    background-color: white;
+}
+
+.teacherTable>tr>td {
+    height: 150px;
+    width: 100px;
+}
+
+td {
+    padding: 30px 10px;
+}
+
+thead {
+    background: rgb(32, 218, 38);
+}

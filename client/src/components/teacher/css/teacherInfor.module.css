@@ -1,12 +1,19 @@
 #infor-container {
-    width: 100%;
-    /* background: red; */
+    width: 50%;
+    height: 46%;
+    background: rgb(255, 255, 255);
     display: flex;
     flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 10px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 #sub-container {
-    width: 40%;
+    width: 70%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,11 +39,73 @@
     text-align: center;
 }
 
-#update-btn {
+/* #update-btn {
     width: 200px;
     height: 40px;
     color: white;
     background: rgb(7, 164, 7);
-    margin-top: 30px;
-    margin-left: 240px;
+} */
+
+#update-btn {
+    align-items: center;
+    appearance: none;
+    background-color: rgb(7, 164, 7);
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+}
+
+#update-btn:focus {
+    box-shadow: rgb(7, 164, 7) 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+#update-btn:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+#update-btn:active {
+    box-shadow: rgb(7, 164, 7) 0 3px 7px inset;
+    transform: translateY(2px);
+}
+
+.box1,
+.box2 {
+    width: 22%;
+    height: 10%;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    right: 100px;
+    top: 85.35px;
+    border-radius: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.box2 {
+    margin-top: 100px;
 }

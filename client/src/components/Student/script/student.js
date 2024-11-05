@@ -71,6 +71,7 @@ function Student() {
 
     const timetable = () => {
         navigate('/student/timetable')
+        window.location.reload()
     }
 
     return (

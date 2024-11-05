@@ -16,6 +16,7 @@ function Timetable() {
     const [thu7, setThu7] = useState([]);
     const [chunhat, setChunhat] = useState([]);
     const id = localStorage.getItem('id')
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,146 +94,32 @@ function Timetable() {
     }, [])
 
     useEffect(() => {
-        if (thu2.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu2);
-            const myTable = document.getElementById('myTable');
+        const myTable = document.getElementById('myTable');
 
-            for (let i = 0; i < thu2.length; i++) {
-                if (thu2[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[1].textContent += thu2[i].TenLop + '\n';
+        const updateTable = (dayData, columnIndex) => {
+            for (let i = 0; i < dayData.length; i++) {
+                if (dayData[i].ThoiGianHoc === 1) {
+                    myTable.rows[0].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
                 }
-                if (thu2[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[1].textContent += thu2[i].TenLop + '\n';
+                if (dayData[i].ThoiGianHoc === 2) {
+                    myTable.rows[1].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
                 }
-                if (thu2[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[1].textContent += thu2[i].TenLop + '\n';
+                if (dayData[i].ThoiGianHoc === 3) {
+                    myTable.rows[2].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
                 }
             }
-        }
+        };
 
-        if (thu3.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu3);
-            const myTable = document.getElementById('myTable');
+        if (thu2.length > 0) updateTable(thu2, 1);
+        if (thu3.length > 0) updateTable(thu3, 2);
+        if (thu4.length > 0) updateTable(thu4, 3);
+        if (thu5.length > 0) updateTable(thu5, 4);
+        if (thu6.length > 0) updateTable(thu6, 5);
+        if (thu7.length > 0) updateTable(thu7, 6);
+        if (chunhat.length > 0) updateTable(chunhat, 7);
 
-            for (let i = 0; i < thu3.length; i++) {
-                if (thu3[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[2].textContent += thu3[i].TenLop + '\n';
-                }
-                if (thu3[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[2].textContent += thu3[i].TenLop + '\n';
-                }
-                if (thu3[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[2].textContent += thu3[i].TenLop + '\n';
-                }
-            }
-        }
-
-        if (thu4.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu4);
-            const myTable = document.getElementById('myTable');
-
-            for (let i = 0; i < thu4.length; i++) {
-                if (thu4[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[3].textContent += thu4[i].TenLop + '\n';
-                }
-                if (thu4[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[3].textContent += thu4[i].TenLop + '\n';
-                }
-                if (thu4[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[3].textContent += thu4[i].TenLop + '\n';
-                }
-            }
-        }
-
-        if (thu5.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu5);
-            const myTable = document.getElementById('myTable');
-
-            for (let i = 0; i < thu5.length; i++) {
-                if (thu5[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[4].textContent += thu5[i].TenLop + '\n';
-                }
-                if (thu5[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[4].textContent += thu5[i].TenLop + '\n';
-                }
-                if (thu5[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[4].textContent += thu5[i].TenLop + '\n';
-                }
-            }
-        }
-
-        if (thu6.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu6);
-            const myTable = document.getElementById('myTable');
-
-            for (let i = 0; i < thu6.length; i++) {
-                if (thu6[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[5].textContent += thu6[i].TenLop + '\n';
-                }
-                if (thu6[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[5].textContent += thu6[i].TenLop + '\n';
-                }
-                if (thu6[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[5].textContent += thu6[i].TenLop + '\n';
-                }
-            }
-        }
-
-        if (thu7.length == 0) {
-            return;
-        }
-        else {
-            // console.log(thu7);
-            const myTable = document.getElementById('myTable');
-
-            for (let i = 0; i < thu7.length; i++) {
-                if (thu7[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[6].textContent += thu7[i].TenLop + '\n';
-                }
-                if (thu7[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[6].textContent += thu7[i].TenLop + '\n';
-                }
-                if (thu7[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[6].textContent += thu7[i].TenLop + '\n';
-                }
-            }
-        }
-
-        if (chunhat.length == 0) {
-            return;
-        }
-        else {
-            // console.log(chunhat);
-            const myTable = document.getElementById('myTable');
-
-            for (let i = 0; i < chunhat.length; i++) {
-                if (chunhat[i].ThoiGianHoc == 1) {
-                    myTable.rows[0].cells[7].innerHTML += `${chunhat[i].TenLop} <br>`;
-                }
-                if (chunhat[i].ThoiGianHoc == 2) {
-                    myTable.rows[1].cells[7].innerHTML += chunhat[i].TenLop + '<br>';
-                }
-                if (chunhat[i].ThoiGianHoc == 3) {
-                    myTable.rows[2].cells[7].innerHTML += chunhat[i].TenLop + '<br>';
-                }
-            }
-        }
     }, [thu2, thu3, thu4, thu5, thu6, thu7, chunhat]);
+
 
 
     return (

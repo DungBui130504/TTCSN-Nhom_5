@@ -3,6 +3,11 @@ import style from '../css/teacher.module.css';
 import { useNavigate, Outlet } from 'react-router-dom';
 import TeacherInfor from './teacherInfor';
 import axios from 'axios';
+import { FaUserEdit } from "react-icons/fa";
+import { IoBookSharp } from "react-icons/io5";
+import { FaBusinessTime } from "react-icons/fa";
+import { FaMarker } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 
 const Teacher = () => {
     const [teachername, setTeacherName] = useState('Lỗi khi tải tên')
@@ -30,6 +35,7 @@ const Teacher = () => {
 
     const handleGetTimeTable = () => {
         navigate('/teacher/teacher_timetable')
+        window.location.reload()
     }
 
     const handleUpdateMark = () => {
@@ -43,34 +49,34 @@ const Teacher = () => {
     return (
         <div className={style["teacher-dashboard"]}>
             <div id={style['nav-container']}>
-                <div id={style['nav-title']}>
-                    <p>TEACHER WORKPLACE</p>
-                </div>
+                <div id={style['nav-title']}></div>
                 <div id={style['nav']}>
                     <ul id={style['nav-menu']}>
-                        <li>
-                            <a id={style['link']} onClick={handleUpdateStatus}>Sửa thông tin</a>
+                        <li onClick={handleUpdateStatus}>
+                            <a id={style['link']} ><FaUserEdit id={style['user-icon']} /></a>
+                            <p className={style["nav-title"]}>Thông tin tài khoản</p>
                         </li>
-                        <li>
-                            <a id={style['link']} onClick={handleGetSubject}>Xem danh sách môn giảng dạy</a>
+                        <li onClick={handleGetSubject}>
+                            <a id={style['link']} ><IoBookSharp id={style["teaching-subject"]} /></a>
+                            <p className={style["nav-title"]}>Môn học đang giảng dạy</p>
                         </li>
-                        <li>
-                            <a id={style['link']} onClick={handleGetTimeTable}>Xem lịch giảng dạy</a>
+                        <li onClick={handleGetTimeTable}>
+                            <a id={style['link']} ><FaBusinessTime id={style["teaching-time"]} /></a>
+                            <p className={style["nav-title"]}>Xem lịch giảng dạy</p>
                         </li>
-                        <li>
-                            <a id={style['link']} onClick={handleUpdateMark}>Sửa điểm</a>
+                        <li onClick={handleUpdateMark}>
+                            <a id={style['link']} >< FaMarker id={style["update-mark"]} /></a>
+                            <p className={style["nav-title"]}>Chỉnh sửa điểm sinh viên</p>
                         </li>
-                        <li>
-                            <a id={style['link']} onClick={handleSignOut}>Đăng xuất</a>
+                        <li onClick={handleSignOut}>
+                            <a id={style['link']} >< IoLogOut id={style["log-out"]} /></a>
+                            <p className={style["nav-title"]}>Đăng xuất</p>
                         </li>
                     </ul>
                 </div>
             </div>
             <div id={style['teacher-workplace']}>
-                <div id={style["workplace-header"]}>
-                    <p id={style["teacher-name"]}>Giảng viên: {teachername}</p>
-                </div>
-                <hr />
+                <div className={style["header"]}></div>
                 <Outlet />
             </div>
         </div>
