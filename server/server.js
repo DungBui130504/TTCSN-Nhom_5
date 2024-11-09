@@ -366,7 +366,7 @@ app.post('/subject_teacher', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`SELECT DISTINCT S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc, COUNT(DISTINCT S.MaSV) AS SoLuong FROM SinhVienTrongLop S JOIN ThoiKhoaBieu T ON S.MaMonHoc = T.MaMonHoc WHERE S.MaGV = '${id}' GROUP BY S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc`);
+        const result = await sql.query(`SELECT DISTINCT S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, COUNT(DISTINCT S.MaSV) AS SoLuong FROM SinhVienTrongLop S JOIN ThoiKhoaBieu T ON S.MaMonHoc = T.MaMonHoc WHERE S.MaGV = '${id}' GROUP BY S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc`);
 
         res.status(200).json({
             resData: result.recordset
@@ -386,7 +386,7 @@ app.post('/teacher_timetable', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`SELECT DISTINCT SinhVienTrongLop.MaLop, SinhVienTrongLop.TenLop, ThoiKhoaBieu.Thu1, ThoiKhoaBieu.Thu2, ThoiKhoaBieu.TenLop, SinhVienTrongLop.MaGV, SinhVienTrongLop.TenGV, ThoiKhoaBieu.ThoiGianHoc FROM SinhVienTrongLop JOIN ThoiKhoaBieu ON SinhVienTrongLop.MaLop = ThoiKhoaBieu.MaLop WHERE SinhVienTrongLop.MaGV = 'gv01'`);
+        const result = await sql.query(`select Thu1, Thu2, ThoiGianHoc, TenLop from ThoiKhoaBieu where MaGV ='${id}'`);
 
         res.status(200).json({
             resData: result.recordset
@@ -417,6 +417,269 @@ app.post('/search_student', async (req, res) => {
 
     }
 })
+
+app.post('/update_mark', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, classId, id, tx1, tx2, giuaKy } = req.body;
+
+        // console.log(ma, classId, id, tx1, tx2, giuaKy);
+
+        const result = await sql.query(`UPDATE Diem SET DiemTx1 = ${Number(tx1)}, DiemTx2 = ${Number(tx2)}, DiemGiuaKy = ${Number(giuaKy)} WHERE MaSV = ${Number(ma)} AND MaLop = '${classId}' AND MaGV = '${id}'`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/search_class', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { classId, id } = req.body;
+
+        console.log(classId, id);
+
+        const result = await sql.query(`select distinct  D.MaLop,D.TenLop,D.MaSV, S.TenSV, D.DiemTx1, D.DiemTx2,D.DiemGiuaKy,D.DiemCuoiKy from Diem D join SinhVienTrongLop S on D.MaSV=S.MaSV where D.MaLop='${classId}' and D.MaGV='${id}'`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/add_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, ten, tk, mk, xa, huyen, tinh, sdt, email, ngaySinh } = req.body;
+
+        const result = await sql.query(`insert into GiangVien (MaGV,TenGV, TaiKhoan, MatKhau, SoDienThoai, Email, Xa, Huyen, Tinh, NgaySinh, MaAdmin) values ('${ma}', N'${ten}', '${tk}', '${mk}', '${sdt}', '${email}', N'${xa}', N'${huyen}', N'${tinh}', '${ngaySinh}', 1)`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/list_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        const result = await sql.query(`select * from GiangVien`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/del_teacher', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body;
+
+        const result = await sql.query(`delete from GiangVien where MaGV='${id}'`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/add_student', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, ten, tk, mk, xa, huyen, tinh, sdt, email, ngaySinh } = req.body;
+
+        const result = await sql.query(`insert into SinhVien (MaSV,TenSV, TaiKhoan, MatKhau, SoDienThoai, Email, Xa, Huyen, Tinh, NgaySinh, MaAdmin) values ('${ma}', N'${ten}', '${tk}', '${mk}', '${sdt}', '${email}', N'${xa}', N'${huyen}', N'${tinh}', '${ngaySinh}', 1)`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/list_student', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        const result = await sql.query(`select * from SinhVien`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/del_student', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body;
+
+        const result = await sql.query(`delete from SinhVien where MaSV='${id}'`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/add_subject', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy } = req.body;
+
+        const result = await sql.query(`begin transaction
+insert into MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, TenNganh )
+values 
+('${ma}',N'${ten}', ${tinChi},'${nganh}',N'${tenN}')
+
+insert into HeSoDiem(MaMonHoc, TenMonHoc, HsTx1,HsTx2, HsGiuaKy, HsCuoiKy)
+values 
+('${ma}',N'${ten}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy})
+commit`)
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/del_subject', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body;
+
+        const result = await sql.query(`begin transaction
+delete from HeSoDiem
+where  MaMonHoc='${id}' 
+delete from MonHoc
+where  MaMonHoc='${id}'  
+commit`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/list_subject', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        const result = await sql.query(`select * from MonHoc`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/add_class', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, ten, tg } = req.body;
+
+        const result = await sql.query(`INSERT INTO Lop (MaLop, TenLop, ThoiGianBatDau, MaAdmin)
+VALUES 
+('${ma}', N'${ten}', '${tg}', 1)`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/del_class', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { id } = req.body;
+
+        const result = await sql.query(`delete from Lop
+where MaLop ='${id}'`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/list_class', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        const result = await sql.query(`select * from Lop`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);

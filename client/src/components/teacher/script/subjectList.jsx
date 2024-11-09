@@ -43,92 +43,21 @@ function SubjectList() {
                     <th>Tên Môn Học</th>
                     <th>Mã Lớp</th>
                     <th>Tên Lớp</th>
-                    <th>Thời Gian</th>
                     <th>Số Lượng Sinh Viên</th>
                 </thead>
 
                 <tbody>
                     {data.map((data, index) => (
-                        <tr key={data.MaMonHoc}
+                        <tr key={index}
                             style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
+                                backgroundColor: index % 2 == 0 ? 'white' : '#f2f2f2'
                             }}
                         >
-
                             <td>{data.MaNganh}</td>
                             <td>{data.MaMonHoc}</td>
                             <td>{data.TenMonHoc}</td>
                             <td>{data.MaLop}</td>
                             <td>{data.TenLop}</td>
-                            <td>{convertTime(data.ThoiGianHoc)}</td>
-                            <td>{data.SoLuong}</td>
-                        </tr>
-                    ))}
-
-                    {data.map((data, index) => (
-                        <tr key={data.MaMonHoc}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-
-                            <td>{data.MaNganh}</td>
-                            <td>{data.MaMonHoc}</td>
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{convertTime(data.ThoiGianHoc)}</td>
-                            <td>{data.SoLuong}</td>
-                        </tr>
-                    ))}
-
-                    {data.map((data, index) => (
-                        <tr key={data.MaMonHoc}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-
-                            <td>{data.MaNganh}</td>
-                            <td>{data.MaMonHoc}</td>
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{convertTime(data.ThoiGianHoc)}</td>
-                            <td>{data.SoLuong}</td>
-                        </tr>
-                    ))}
-
-                    {data.map((data, index) => (
-                        <tr key={data.MaMonHoc}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-
-                            <td>{data.MaNganh}</td>
-                            <td>{data.MaMonHoc}</td>
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{convertTime(data.ThoiGianHoc)}</td>
-                            <td>{data.SoLuong}</td>
-                        </tr>
-                    ))}
-
-                    {data.map((data, index) => (
-                        <tr key={data.MaMonHoc}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-
-                            <td>{data.MaNganh}</td>
-                            <td>{data.MaMonHoc}</td>
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{convertTime(data.ThoiGianHoc)}</td>
                             <td>{data.SoLuong}</td>
                         </tr>
                     ))}

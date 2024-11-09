@@ -15,7 +15,7 @@ function TeacherTimeTable() {
     useEffect(() => {
         const fetchData = async () => {
             let response = await axios.post('http://localhost:8000/teacher_timetable', { id });
-            console.log(response.data.resData);
+            // console.log(response.data.resData);
             const newThu2Data = [];
             const newThu3Data = [];
             const newThu4Data = [];
@@ -128,36 +128,38 @@ function TeacherTimeTable() {
                         <th>CN</th>
                     </tr>
                 </thead>
-                <tr>
-                    <td>Sáng</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Chiều</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Tối</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>Sáng</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Chiều</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Tối</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     )

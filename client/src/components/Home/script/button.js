@@ -53,7 +53,8 @@ function go4() {
 function Button() {
 
     return (
-        <input type="submit" value="Đăng nhập" id="submit" onClick={go4} />
+        <input type="submit" value="Đăng nhập" id="submit" onClick={go4}
+        />
     )
 }
 

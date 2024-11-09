@@ -18,7 +18,7 @@ const Teacher = () => {
     useEffect(() => {
         const fetchTeacherData = async () => {
             let response = await axios.post('http://localhost:8000/teacher', { taikhoan, matkhau });
-            // console.log(response.data.teacher[0].TenGV);
+            // console.log(response.data);
             setTeacherName(response.data.teacher[0].TenGV)
         }
 

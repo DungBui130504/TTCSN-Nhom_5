@@ -12,6 +12,10 @@ import TeacherInfor from './components/teacher/script/teacherInfor';
 import SubjectList from './components/teacher/script/subjectList';
 import TeacherTimeTable from './components/teacher/script/teacherTimeTable';
 import UpdateMark from './components/teacher/script/updateMark';
+import TeacherManagement from './components/admin/ManageTeacher/TeacherManagement';
+import ManageStudent from './components/admin/ManageStudent/ManageStudent';
+import ManageSubject from './components/admin/ManageSubject/ManageSubject';
+import ManageClass from './components/admin/ManageClass/ManageClass';
 
 function App() {
   const [taikhoanSV, setTaikhoansv] = useState('')
@@ -59,7 +63,13 @@ function App() {
 
         </Route>
 
-        <Route path='/admin' element={<Admin />} />
+        <Route path='/admin' element={<Admin />} >
+          <Route path='' element={<TeacherManagement />} />
+          <Route path='manage_teacher' element={<TeacherManagement />} />
+          <Route path='manage_student' element={<ManageStudent />} />
+          <Route path='manage_subject' element={<ManageSubject />} />
+          <Route path='manage_class' element={<ManageClass />} />
+        </Route>
 
       </Routes>
     </Router>
