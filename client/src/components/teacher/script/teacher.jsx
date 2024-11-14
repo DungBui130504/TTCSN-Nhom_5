@@ -14,6 +14,8 @@ const Teacher = () => {
     const navigate = useNavigate()
     let taikhoan = localStorage.getItem('taikhoanSV')
     let matkhau = localStorage.getItem('matkhausv')
+    const option = [0, 1, 2, 3]
+    const [choose, setChoose] = useState(option[0])
 
     useEffect(() => {
         const fetchTeacherData = async () => {
@@ -26,19 +28,22 @@ const Teacher = () => {
     }, [])
 
     const handleUpdateStatus = () => {
+        setChoose(option[0])
         navigate('/teacher/teacher_infor')
     }
 
     const handleGetSubject = () => {
+        setChoose(option[1])
         navigate('/teacher/teacher_subject')
     }
 
     const handleGetTimeTable = () => {
+        setChoose(option[2])
         navigate('/teacher/teacher_timetable')
-        window.location.reload()
     }
 
     const handleUpdateMark = () => {
+        setChoose(option[3])
         navigate('/teacher/teacher_update_mark')
     }
 
@@ -49,35 +54,39 @@ const Teacher = () => {
     return (
         <div className={style["teacher-dashboard"]}>
             <div id={style['nav-container']}>
-                <div id={style['nav-title']}></div>
                 <div id={style['nav']}>
+                    <div className={style["logo"]}></div>
                     <ul id={style['nav-menu']}>
-                        <li onClick={handleUpdateStatus}>
-                            <a id={style['link']} ><FaUserEdit id={style['user-icon']} /></a>
+                        <li onClick={handleUpdateStatus} style={choose == option[0] ? { backgroundColor: '#E3DFEE' } : {}}>
+                            <a id={style['link']} ><FaUserEdit style={{ color: '#322B56', marginBottom: '5px' }} /></a>
                             <p className={style["nav-title"]}>Thông tin tài khoản</p>
                         </li>
-                        <li onClick={handleGetSubject}>
-                            <a id={style['link']} ><IoBookSharp id={style["teaching-subject"]} /></a>
-                            <p className={style["nav-title"]}>Môn học đang giảng dạy</p>
+                        <li onClick={handleGetSubject} style={choose == option[1] ? { backgroundColor: '#E3DFEE' } : {}}>
+                            <a id={style['link']} ><IoBookSharp style={{ color: '#322B56', marginBottom: '5px' }} /></a>
+                            <p className={style["nav-title"]}>Môn học và lớp học</p>
                         </li>
-                        <li onClick={handleGetTimeTable}>
-                            <a id={style['link']} ><FaBusinessTime id={style["teaching-time"]} /></a>
-                            <p className={style["nav-title"]}>Xem lịch giảng dạy</p>
+                        <li onClick={handleGetTimeTable} style={choose == option[2] ? { backgroundColor: '#E3DFEE' } : {}}>
+                            <a id={style['link']} ><FaBusinessTime style={{ color: '#322B56', marginBottom: '5px' }} /></a>
+                            <p className={style["nav-title"]}>Lịch giảng dạy</p>
                         </li>
-                        <li onClick={handleUpdateMark}>
-                            <a id={style['link']} >< FaMarker id={style["update-mark"]} /></a>
-                            <p className={style["nav-title"]}>Chỉnh sửa điểm sinh viên</p>
+                        <li onClick={handleUpdateMark} style={choose == option[3] ? { backgroundColor: '#E3DFEE' } : {}}>
+                            <a id={style['link']} >< FaMarker style={{ color: '#322B56', marginBottom: '5px' }} /></a>
+                            <p className={style["nav-title"]}>Sửa điểm</p>
                         </li>
                         <li onClick={handleSignOut}>
-                            <a id={style['link']} >< IoLogOut id={style["log-out"]} /></a>
+                            <a id={style['link']} >< IoLogOut style={{ color: '#322B56', marginBottom: '5px' }} /></a>
                             <p className={style["nav-title"]}>Đăng xuất</p>
                         </li>
                     </ul>
                 </div>
             </div>
             <div id={style['teacher-workplace']}>
-                <div className={style["header"]}></div>
-                <Outlet />
+                <div className={style["main-workplace"]}>
+                    <div className={style["workplace-header"]}>
+                        <p>Trang hoạt động của giảng viên</p>
+                    </div>
+                    <Outlet />
+                </div>
             </div>
         </div>
     );

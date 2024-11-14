@@ -62,7 +62,7 @@ function TeacherInfor() {
     }
 
     return (
-        <>
+        <div className={style['main-container']}>
             <div id={style["infor-container"]}>
                 <div id={style["sub-container"]}>
                     <p>Họ và tên <a>*</a> </p>
@@ -80,9 +80,9 @@ function TeacherInfor() {
                 </div>
                 <button id={style["update-btn"]} onClick={handleUpdate}>Cập nhật thông tin</button>
             </div>
-            <div className={style["box1"]}><p>Số lượng sinh viên đang giảng dạy: {sum}</p></div>
-            <div className={style["box2"]}>Số lượng lớp học hiện có: {sum2}</div>
-        </>
+            <div className={style["box1"]}><div></div><p>Số lượng sinh viên đang giảng dạy: {sum}</p></div>
+            <div className={style["box2"]}><div></div>Số lượng lớp học hiện có: {sum2}</div>
+        </div>
     )
 }
 

@@ -48,7 +48,7 @@ function UpdateMark() {
     };
 
     return (
-        <>
+        <div className={style['main-container']}>
             <div className={style["search-container"]}>
                 <input
                     type="text"
@@ -63,7 +63,7 @@ function UpdateMark() {
 
             <div className={style["update-container"]}>
                 {hadGetStudent ? (
-                    <table className={style["myTable"]} border={1} style={{ borderCollapse: 'collapse', width: '100%', textAlign: 'center', marginTop: '0px', backgroundColor: 'white' }}>
+                    <table className={style["myTable"]} border={1} style={{ borderCollapse: 'collapse', width: '98%', textAlign: 'center', marginTop: '0px', backgroundColor: 'white' }}>
                         <thead>
                             <tr>
                                 <th>Mã lớp</th>
@@ -126,7 +126,7 @@ function UpdateMark() {
                     <p style={{ marginLeft: '20px' }}>Không tìm thấy lớp học hoặc lớp học không có sinh viên nào</p>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 

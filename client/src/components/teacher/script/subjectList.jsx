@@ -31,12 +31,12 @@ function SubjectList() {
 
     return (
         <div className={style['list-container']}>
-            <p id={style['title']}>Bảng danh sách các môn đang giảng dạy</p>
-            <table style={{
-                borderCollapse: 'collapse', width: '100%', textAlign: 'center', marginTop: '20px', backgroundColor: 'white', borderLeft: '1px solid black'
+            <p id={style['title']}>Bảng danh sách các môn học và lớp học đang giảng dạy</p>
+            <table border={1} style={{
+                borderCollapse: 'collapse', width: '98%', textAlign: 'center', marginTop: '20px', backgroundColor: 'white', borderColor: 'black'
             }}>
                 <thead
-                    style={{ border: '1px solid black' }}
+                    style={{ backgroundColor: 'rgb(32, 218, 38)' }}
                 >
                     <th>Mã Ngành</th>
                     <th>Mã Môn Học</th>
@@ -48,11 +48,7 @@ function SubjectList() {
 
                 <tbody>
                     {data.map((data, index) => (
-                        <tr key={index}
-                            style={{
-                                backgroundColor: index % 2 == 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
+                        <tr key={index}>
                             <td>{data.MaNganh}</td>
                             <td>{data.MaMonHoc}</td>
                             <td>{data.TenMonHoc}</td>

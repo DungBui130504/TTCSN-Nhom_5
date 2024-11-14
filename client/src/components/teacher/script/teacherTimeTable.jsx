@@ -114,8 +114,8 @@ function TeacherTimeTable() {
 
     return (
         <div id={style['time-table-container']}>
-            <p id={style["time-title"]}>Thời khóa biểu</p>
-            <table id='teacherTable' className={style['teacherTable']} border={1} style={{ borderCollapse: 'collapse', width: '100%', textAlign: 'center', marginTop: '20px' }}>
+            <p id={style["time-title"]}>Lịch giảng dạy</p>
+            <table id='teacherTable' className={style['teacherTable']} border={1} style={{ borderCollapse: 'collapse', width: '98%', textAlign: 'center', marginTop: '20px', borderColor: 'black' }}>
                 <thead>
                     <tr>
                         <th>Thời Gian</th>
