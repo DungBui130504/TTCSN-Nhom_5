@@ -1,9 +1,15 @@
 .teacher-container {
     width: 100%;
     height: 200%;
+    background-color: #F1F4FA;
 }
 
-.add-container,
+.add-container {
+    background-color: white;
+    width: 100%;
+    height: 90%;
+}
+
 .list-container {
     width: 100%;
     height: 50%;
@@ -30,9 +36,9 @@
     height: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding-left: 50px;
     padding-right: 50px;
+    margin-top: 100px;
 }
 
 .box1 {
@@ -43,7 +49,7 @@
 .box2>input,
 .box3>input {
     border: 1px solid black;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     height: 50px;
     text-align: center;
 }
@@ -60,13 +66,25 @@
     color: black;
 }
 
-.box1>input,
-.box2>input,
+.box1>input:focus,
+.box2>input:focus,
 .box3>input:focus {
     outline: none;
+    border-right: 5px solid greenyellow;
 }
 
 .add {
     position: absolute;
-    bottom: 100px;
+    bottom: 150px;
+    width: 150px;
+    height: 50px;
+    background-color: rgb(23, 209, 13);
+    cursor: pointer;
+    color: white;
+    transition: 0.5s;
+}
+
+.add:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    bottom: 160px;
 }

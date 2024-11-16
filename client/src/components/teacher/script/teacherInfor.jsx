@@ -55,10 +55,16 @@ function TeacherInfor() {
     }, [count]);
 
     const handleUpdate = async () => {
-        let response = await axios.post('http://localhost:8000/update_teacher', { id, name, phone, email });
-        // console.log(response.data.resData);
-        setCheck(!check)
-        window.location.reload()
+        try {
+            let response = await axios.post('http://localhost:8000/update_teacher', { id, name, phone, email });
+            // console.log(response.data.resData);
+            setCheck(!check)
+            window.alert('Thành công!')
+            window.location.reload()
+        } catch (error) {
+            console.log(error);
+            window.alert('Không thể sửa!')
+        }
     }
 
     return (

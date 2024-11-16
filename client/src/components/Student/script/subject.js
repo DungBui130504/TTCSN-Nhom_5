@@ -7,18 +7,30 @@ function Subject() {
 
     const [id, setID] = useState(localStorage.getItem('id'))
 
-    console.log(id);
+    // console.log(id);
 
 
     useEffect(() => {
         const fetchData = async () => {
             let response = await axios.post('http://localhost:8000/getSubject', { id });
-            console.log(response.data.resData);
+            // console.log(response.data.resData);
             setSubject(response.data.resData)
         }
 
         fetchData();
     }, [])
+
+    function convertTime(number) {
+        if (number === 1) {
+            return 'Sáng'
+        }
+        if (number === 2) {
+            return 'Chiều'
+        }
+        if (number === 3) {
+            return 'Tối'
+        }
+    }
 
     return (
         <div className='subject-container'>
@@ -30,6 +42,8 @@ function Subject() {
                     <th>Tên môn</th>
                     <th>Mã lớp</th>
                     <th>Tên lớp</th>
+                    <th>Ngày Thi</th>
+                    <th>Thời Gian Thi</th>
                 </thead>
 
                 <tbody>
@@ -44,6 +58,8 @@ function Subject() {
                             <td>{sub.TenMonHoc}</td>
                             <td>{sub.MaLop}</td>
                             <td>{sub.TenLop}</td>
+                            <td>{sub.NgayThi}</td>
+                            <td>{convertTime(sub.ThoiGianThi)}</td>
                         </tr>
                     ))}
                 </tbody>

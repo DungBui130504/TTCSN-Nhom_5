@@ -16,17 +16,16 @@ function SubjectList() {
         fetchData();
     }, [])
 
-    function convertTime(time) {
-        if (time == 1) {
-            return <p>Sáng</p>
+    function convertTime(number) {
+        if (number === 1) {
+            return 'Sáng'
         }
-        if (time == 2) {
-            return <p>Chiều</p>
+        if (number === 2) {
+            return 'Chiều'
         }
-        if (time == 3) {
-            return <p>Tối</p>
+        if (number === 3) {
+            return 'Tối'
         }
-        return <p>Lỗi</p>
     }
 
     return (
@@ -43,6 +42,8 @@ function SubjectList() {
                     <th>Tên Môn Học</th>
                     <th>Mã Lớp</th>
                     <th>Tên Lớp</th>
+                    <th>Ngày Thi</th>
+                    <th>Thời Gian Thi</th>
                     <th>Số Lượng Sinh Viên</th>
                 </thead>
 
@@ -54,6 +55,8 @@ function SubjectList() {
                             <td>{data.TenMonHoc}</td>
                             <td>{data.MaLop}</td>
                             <td>{data.TenLop}</td>
+                            <td>{data.NgayThi}</td>
+                            <td>{convertTime(data.ThoiGianThi)}</td>
                             <td>{data.SoLuong}</td>
                         </tr>
                     ))}

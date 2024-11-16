@@ -156,7 +156,7 @@ app.post('/updateStudent', async (req, res) => {
         console.log('Kết nối thành công đến SQL Server');
 
         // Lấy dữ liệu từ body của request
-        let { id, Name, Phone, Email, taikhoan, matkhau } = req.body;
+        let { id, Name, Phone, Email, tk, mk, Birth, Xa, Huyen, Tinh } = req.body;
 
         // Sử dụng Prepared Statements với các biến input
         const result = await pool.request()
@@ -164,7 +164,11 @@ app.post('/updateStudent', async (req, res) => {
             .input('Phone', sql.VarChar, Phone)
             .input('Email', sql.VarChar, Email)
             .input('id', sql.Int, id)
-            .query(`UPDATE SinhVien SET TenSV = @Name, SoDienThoai = @Phone, Email = @Email WHERE MaSV = @id`);
+            .input('Birth', sql.NVarChar, Birth)
+            .input('Xa', sql.NVarChar, Xa)
+            .input('Huyen', sql.NVarChar, Huyen)
+            .input('Tinh', sql.NVarChar, Tinh)
+            .query(`UPDATE SinhVien SET TenSV = @Name, SoDienThoai = @Phone, Email = @Email, NgaySinh = @Birth, Xa = @Xa, Huyen = @Huyen, Tinh = @Tinh WHERE MaSV = @id`);
 
         // Trả về kết quả thành công
         res.status(200).json({
@@ -226,7 +230,16 @@ app.post('/studentMark', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`SELECT Diem.MaSV, Diem.TinChi, Diem.TenSV, Diem.MaLop, Diem.TenLop, Diem.MaMonHoc, Diem.TenMonHoc, Diem.DiemTx1, Diem.DiemTx2, Diem.DiemGiuaKy, Diem.DiemCuoiKy, (HsTx1 * DiemTx1 + HsTx2 * DiemTx2 + DiemGiuaKy * HsGiuaKy + DiemCuoiKy * HsCuoiKy) AS N'DiemTichLuyMon' FROM Diem JOIN HeSoDiem ON Diem.MaMonHoc = HeSoDiem.MaMonHoc WHERE Diem.MaSV=${id}`);
+        const result = await sql.query(`select distinct D.TenMonHoc,D.MaLop, D.TenLop, f.TinChi,
+
+ D.DiemTx1, D.DiemTx2,D.DiemGiuaKy,D.DiemCuoiKy, 
+
+round((f.HsTx1 * D.DiemTx1 + f.HsTx2 * D.DiemTx2+ D.DiemGiuaKy * f.HsGiuaKy+ D.DiemCuoiKy* f.HsCuoiKy), 2) as N'DiemTichLuyMon'
+
+from  Diem D 
+join SinhVienTrongLop t on D.MaLop = t.MaLop
+join MonHoc f on D.MaMonHoc=f.MaMonHoc
+where D.MaSV='${id}'`);
 
         res.status(200).json({
             resData: result.recordset
@@ -245,7 +258,10 @@ app.post('/getSubject', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`select * from SinhVienTrongLop where MaSV=${id}`);
+        const result = await sql.query(`select distinct N.MaNganh,N.MaMonHoc, N.TenMonHoc, N.MaLop, N.TenLop, Lop.NgayThi, Lop.ThoiGianThi from Lop
+INNER join SinhVienTrongLop N
+on Lop.MaLop = N.MaLop
+where N.MaSV='${id}'`);
 
         res.status(200).json({
             resData: result.recordset
@@ -366,7 +382,11 @@ app.post('/subject_teacher', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`SELECT DISTINCT S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, COUNT(DISTINCT S.MaSV) AS SoLuong FROM SinhVienTrongLop S JOIN ThoiKhoaBieu T ON S.MaMonHoc = T.MaMonHoc WHERE S.MaGV = '${id}' GROUP BY S.MaNganh, S.MaMonHoc, S.TenMonHoc, S.MaLop, S.TenLop, T.ThoiGianHoc`);
+        const result = await sql.query(`select N.MaNganh,N.MaMonHoc, N.TenMonHoc, Lop.MaLop, Lop.TenLop, Lop.NgayThi, Lop.ThoiGianThi, count(distinct MaSV) as SoLuong from Lop
+join SinhVienTrongLop N
+on Lop.MaLop = N.MaLop
+where N.MaGV='${id}'
+group by N.MaNganh,N.MaMonHoc, N.TenMonHoc, Lop.MaLop, Lop.TenLop, Lop.NgayThi, Lop.ThoiGianThi`);
 
         res.status(200).json({
             resData: result.recordset
@@ -517,7 +537,7 @@ app.post('/add_student', async (req, res) => {
 
         let { ma, ten, tk, mk, xa, huyen, tinh, sdt, email, ngaySinh } = req.body;
 
-        const result = await sql.query(`insert into SinhVien (MaSV,TenSV, TaiKhoan, MatKhau, SoDienThoai, Email, Xa, Huyen, Tinh, NgaySinh, MaAdmin) values ('${ma}', N'${ten}', '${tk}', '${mk}', '${sdt}', '${email}', N'${xa}', N'${huyen}', N'${tinh}', '${ngaySinh}', 1)`)
+        const result = await sql.query(`insert into SinhVien (MaSV,TenSV, TaiKhoan, MatKhau, SoDienThoai, Email, Xa, Huyen, Tinh, NgaySinh) values ('${ma}', N'${ten}', '${tk}', '${mk}', '${sdt}', '${email}', N'${xa}', N'${huyen}', N'${tinh}', '${ngaySinh}')`)
 
         res.status(200).json({
             resData: result.recordset
@@ -569,15 +589,9 @@ app.post('/add_subject', async (req, res) => {
 
         let { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy } = req.body;
 
-        const result = await sql.query(`begin transaction
-insert into MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, TenNganh )
+        const result = await sql.query(` insert into MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, TenNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy )
 values 
-('${ma}',N'${ten}', ${tinChi},'${nganh}',N'${tenN}')
-
-insert into HeSoDiem(MaMonHoc, TenMonHoc, HsTx1,HsTx2, HsGiuaKy, HsCuoiKy)
-values 
-('${ma}',N'${ten}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy})
-commit`)
+('${ma}',N'${ten}', ${tinChi},'${nganh}',N'${tenN}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy}) `)
         res.status(200).json({
             resData: result.recordset
         });
@@ -594,12 +608,7 @@ app.post('/del_subject', async (req, res) => {
 
         let { id } = req.body;
 
-        const result = await sql.query(`begin transaction
-delete from HeSoDiem
-where  MaMonHoc='${id}' 
-delete from MonHoc
-where  MaMonHoc='${id}'  
-commit`)
+        const result = await sql.query(`delete from MonHoc where MaMonHoc = '${id}'`)
 
         res.status(200).json({
             resData: result.recordset
@@ -626,16 +635,58 @@ app.post('/list_subject', async (req, res) => {
     }
 });
 
+app.post('/update_subject', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let {
+            MaMonHoc,
+            updateTenMonHoc,
+            updateTinChi,
+            updateMaNganh,
+            updateTenNganh,
+            updateHsTx1,
+            updateHsTx2,
+            updateHsGiuaKy,
+            updateHsCuoiKy
+        } = req.body;
+
+        // Xây dựng câu lệnh UPDATE
+        const result = await sql.query(`
+            UPDATE MonHoc 
+            SET 
+                TenMonHoc = '${updateTenMonHoc}', 
+                TinChi = '${updateTinChi}', 
+                MaNganh = '${updateMaNganh}', 
+                TenNganh = '${updateTenNganh}', 
+                HsTx1 = '${updateHsTx1}', 
+                HsTx2 = '${updateHsTx2}', 
+                HsGiuaKy = '${updateHsGiuaKy}', 
+                HsCuoiKy = '${updateHsCuoiKy}' 
+            WHERE MaMonHoc = '${MaMonHoc}'
+        `);
+
+        res.status(200).json({
+            message: 'Cập nhật thành công!',
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
 app.post('/add_class', async (req, res) => {
     try {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        let { ma, ten, tg } = req.body;
+        let { ma, ten, start, time, day } = req.body;
 
-        const result = await sql.query(`INSERT INTO Lop (MaLop, TenLop, ThoiGianBatDau, MaAdmin)
+        const result = await sql.query(`INSERT INTO Lop (MaLop, TenLop, ThoiGianBatDau, NgayThi, ThoiGianThi, MaAdmin)
 VALUES 
-('${ma}', N'${ten}', '${tg}', 1)`)
+('${ma}', N'${ten}', '${start}', '${day}', ${time}, 1)`)
 
         res.status(200).json({
             resData: result.recordset

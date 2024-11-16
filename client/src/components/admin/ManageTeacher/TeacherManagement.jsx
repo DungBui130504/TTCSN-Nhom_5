@@ -17,8 +17,8 @@ function TeacherManagement() {
     const [check, setCheck] = useState(false);
 
     const handleAdding = async () => {
-        if (ma == '' || ten == '') {
-            window.alert('Không để trống mã và tên')
+        if (ma == '' || ten == '' || tk == '' || mk == '') {
+            window.alert('Không để trống mã, tên, tài khoản và mật khẩu')
             return;
         }
         if (sdt == '' || email == '') {
@@ -29,11 +29,11 @@ function TeacherManagement() {
         try {
             let response = await axios.post('http://localhost:8000/add_teacher', { ma, ten, tk, mk, xa, huyen, tinh, sdt, email, ngaySinh });
             console.log(response.data);
-            setCheck(!check); // Cập nhật lại danh sách sau khi thêm
+            setCheck(!check); // Cập nhật lại danh sách sau khi Nhập
         }
         catch (err) {
             console.log(err);
-            window.alert('Thêm không thành công');
+            window.alert('Nhập không thành công');
         }
     };
 
@@ -68,25 +68,32 @@ function TeacherManagement() {
         <div className={style["teacher-container"]}>
             <div className={style["add-container"]} id='here'>
                 <div className={style["input"]}>
+                    <p
+                        style={{ position: 'absolute', top: '10px', left: '10px', fontSize: '20px' }}
+                    >Nhập thông tin giảng viên mới</p>
                     <div className={style["box1"]}>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mã mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập mã giảng viên"
                             value={ma}
                             onChange={(e) => setMa(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập tên mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập tên giảng viên"
                             value={ten}
                             onChange={(e) => setTen(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập tài khoản mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập tài khoản giảng viên"
                             value={tk}
                             onChange={(e) => setTk(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mật khẩu mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập mật khẩu giảng viên"
@@ -95,18 +102,21 @@ function TeacherManagement() {
                         />
                     </div>
                     <div className={style["box2"]}>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập số điện thoại mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập số điện thoại"
                             value={sdt}
                             onChange={(e) => setSdt(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập email mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập ngày sinh mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập ngày sinh"
@@ -115,18 +125,21 @@ function TeacherManagement() {
                         />
                     </div>
                     <div className={style["box3"]}>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập xã mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập xã"
                             value={xa}
                             onChange={(e) => setXa(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập huyện mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập huyện"
                             value={huyen}
                             onChange={(e) => setHuyen(e.target.value)}
                         />
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập tỉnh mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập tỉnh"
@@ -134,7 +147,7 @@ function TeacherManagement() {
                             onChange={(e) => setTinh(e.target.value)}
                         />
                     </div>
-                    <button className={style['add']} onClick={handleAdding}>Thêm giảng viên</button>
+                    <button className={style['add']} onClick={handleAdding}>Thêm giảng viên mới</button>
                 </div>
             </div>
             <div className={style["list-container"]} id='here2'>

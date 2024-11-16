@@ -17,9 +17,9 @@ function Mark() {
     }, [])
 
     function convertScoreToGrade(score) {
-        if (score >= 9.0 && score <= 10) {
+        if (score >= 8.6 && score <= 10) {
             return 'A'; // Xuất sắc
-        } else if (score >= 8.0 && score < 8.5) {
+        } else if (score >= 8.0 && score < 8.6) {
             return 'B+'; // Khá tốt
         } else if (score >= 7.0 && score < 8.0) {
             return 'B'; // Khá
@@ -58,101 +58,6 @@ function Mark() {
                 </thead>
 
                 <tbody>
-                    {datas.map((data, index) => (
-                        <tr key={data.MaSV}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{data.TinChi}</td>
-                            <td>{data.DiemTx1}</td>
-                            <td>{data.DiemTx2}</td>
-                            <td>{data.DiemGiuaKy}</td>
-                            <td>{data.DiemCuoiKy}</td>
-                            <td>{Math.round((data.DiemTichLuyMon) * 10) / 10}</td>
-                            <td>{convertScoreToGrade(Math.round((data.DiemTichLuyMon) * 10) / 10)}</td>
-                        </tr>
-                    ))}
-
-                    {datas.map((data, index) => (
-                        <tr key={data.MaSV}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{data.TinChi}</td>
-                            <td>{data.DiemTx1}</td>
-                            <td>{data.DiemTx2}</td>
-                            <td>{data.DiemGiuaKy}</td>
-                            <td>{data.DiemCuoiKy}</td>
-                            <td>{Math.round((data.DiemTichLuyMon) * 10) / 10}</td>
-                            <td>{convertScoreToGrade(Math.round((data.DiemTichLuyMon) * 10) / 10)}</td>
-                        </tr>
-                    ))}
-
-                    {datas.map((data, index) => (
-                        <tr key={data.MaSV}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{data.TinChi}</td>
-                            <td>{data.DiemTx1}</td>
-                            <td>{data.DiemTx2}</td>
-                            <td>{data.DiemGiuaKy}</td>
-                            <td>{data.DiemCuoiKy}</td>
-                            <td>{Math.round((data.DiemTichLuyMon) * 10) / 10}</td>
-                            <td>{convertScoreToGrade(Math.round((data.DiemTichLuyMon) * 10) / 10)}</td>
-                        </tr>
-                    ))}
-
-                    {datas.map((data, index) => (
-                        <tr key={data.MaSV}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{data.TinChi}</td>
-                            <td>{data.DiemTx1}</td>
-                            <td>{data.DiemTx2}</td>
-                            <td>{data.DiemGiuaKy}</td>
-                            <td>{data.DiemCuoiKy}</td>
-                            <td>{Math.round((data.DiemTichLuyMon) * 10) / 10}</td>
-                            <td>{convertScoreToGrade(Math.round((data.DiemTichLuyMon) * 10) / 10)}</td>
-                        </tr>
-                    ))}
-
-                    {datas.map((data, index) => (
-                        <tr key={data.MaSV}
-                            style={{
-                                backgroundColor: index % 2 === 0 ? 'white' : '#f2f2f2'
-                            }}
-                        >
-                            <td>{data.TenMonHoc}</td>
-                            <td>{data.MaLop}</td>
-                            <td>{data.TenLop}</td>
-                            <td>{data.TinChi}</td>
-                            <td>{data.DiemTx1}</td>
-                            <td>{data.DiemTx2}</td>
-                            <td>{data.DiemGiuaKy}</td>
-                            <td>{data.DiemCuoiKy}</td>
-                            <td>{Math.round((data.DiemTichLuyMon) * 10) / 10}</td>
-                            <td>{convertScoreToGrade(Math.round((data.DiemTichLuyMon) * 10) / 10)}</td>
-                        </tr>
-                    ))}
-
                     {datas.map((data, index) => (
                         <tr key={data.MaSV}
                             style={{

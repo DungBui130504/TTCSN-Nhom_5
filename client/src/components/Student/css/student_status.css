@@ -1,14 +1,14 @@
 #main-workplace {
     height: 80%;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 0px;
     padding: 20px;
     display: flex;
 }
 
 #input {
-    height: 88%;
-    width: 60%;
+    height: 110%;
+    width: 65%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,11 +31,8 @@
 }
 
 .label {
-    width: 100px;
+    width: 200px;
     height: 30px;
-    margin-right: 10px;
-    text-align: left;
-    /* background-color: blue; */
 }
 
 .label.email {
@@ -60,14 +57,18 @@
     width: 180px;
     height: 30px;
     text-align: center;
-    /* background-color: yellowgreen; */
 }
 
 .email-data {
     width: 250px;
     height: 30px;
-    text-align: center;
-    /* background-color: yellowgreen; */
+    padding-left: 165px;
+}
+
+.birth-data {
+    width: 300px;
+    height: 30px;
+    padding-left: 105px;
 }
 
 #arrow {
@@ -116,14 +117,18 @@
 }
 
 .email-input {
-    margin-left: 25px;
+    margin-left: 120px;
+}
+
+.birth-input {
+    margin-right: 110px;
 }
 
 #btn-box {
     display: flex;
     transition: 10s;
     height: 80px;
-    margin-top: 40px;
+    margin-top: 0px;
     align-items: center;
     justify-content: center;
 }
@@ -230,4 +235,39 @@
 #account-submit:hover {
     border-radius: 0;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.birth {
+    padding-left: 110px;
+}
+
+.address {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.input-xa,
+.input-huyen,
+.input-tinh {
+    border-color: white;
+    margin-left: 10px;
+    width: 120px;
+}
+
+.input-xa:focus,
+.input-huyen:focus,
+.input-tinh:focus {
+    outline: none;
+}
+
+.input-xa::placeholder,
+.input-huyen::placeholder,
+.input-tinh::placeholder {
+    color: white;
+    text-align: center;
+}
+
+.xa, .huyen, .tinh {
+    padding-bottom: 10px;
 }
