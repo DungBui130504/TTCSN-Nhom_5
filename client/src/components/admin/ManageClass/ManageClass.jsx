@@ -105,14 +105,14 @@ function ManageClass() {
                             // value={tg}
                             onChange={(e) => setStart(e.target.value)}
                         />
-                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập ngày thi*</p>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập ngày thi dự kiến*</p>
                         <input
                             type="text"
                             placeholder="Nhập ngày thi"
                             // value={tg}
                             onChange={(e) => setDay(e.target.value)}
                         />
-                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập thời gian thi*</p>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập thời gian dự kiến thi*</p>
                         <input
                             type="number"
                             placeholder="Nhập thời gian thi: 1-Sáng ; 2-Chiều ; 3-Tối"
@@ -134,8 +134,8 @@ function ManageClass() {
                             <th>Mã Lớp</th>
                             <th>Tên Lớp</th>
                             <th>Thời Gian Bắt Đầu</th>
-                            <th>Ngày Thi</th>
-                            <th>Thời Gian Thi</th>
+                            <th>Ngày Thi Dự Kiến</th>
+                            <th>Thời Gian Dự Kiến Thi</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -148,7 +148,7 @@ function ManageClass() {
                                 <td>{Class.ThoiGianBatDau}</td>
                                 <td>{Class.NgayThi}</td>
                                 <td>{convertTime(Class.ThoiGianThi)}</td>
-                                <td><button onClick={() => handleDel(Class.MaLop)}>Xóa lớp học</button></td>
+                                <td><button onClick={() => handleDel(Class.MaLop)} className={style["del-btn"]}>Xóa lớp học</button></td>
                             </tr>
                         ))}
                     </tbody>

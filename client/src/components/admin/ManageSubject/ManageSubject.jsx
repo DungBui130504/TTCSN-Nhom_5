@@ -208,7 +208,7 @@ function ManageSubject() {
             <div className={style["list-container"]} id='here6'>
                 <table
                     style={{
-                        borderCollapse: 'collapse', width: '150%', textAlign: 'center', marginTop: '20px', backgroundColor: 'white', borderLeft: '1px solid black'
+                        borderCollapse: 'collapse', width: '170%', textAlign: 'center', marginTop: '20px', backgroundColor: 'white', borderLeft: '1px solid black'
                     }}
                 >
 
@@ -291,8 +291,8 @@ function ManageSubject() {
                                     />
                                 </td>
 
-                                <td><button onClick={() => handleUpdate(subject.MaMonHoc, i)}>Sửa môn học</button></td>
-                                <td><button onClick={() => handleDel(subject.MaMonHoc)}>Xóa</button></td>
+                                <td><button onClick={() => handleUpdate(subject.MaMonHoc, i)} className={style['update-btn']}>Sửa môn học</button></td>
+                                <td><button onClick={() => handleDel(subject.MaMonHoc)} className={style["del-btn"]}>Xóa</button></td>
                             </tr>
                         ))}
                     </tbody>

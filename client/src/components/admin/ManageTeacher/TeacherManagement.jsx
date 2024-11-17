@@ -174,7 +174,7 @@ function TeacherManagement() {
                                 <td>{teacher.TenGV}</td>
                                 <td>{teacher.SoDienThoai}</td>
                                 <td>{teacher.Email}</td>
-                                <td><button onClick={() => handleDel(teacher.MaGV)}>Xóa giảng viên</button></td>
+                                <td><button onClick={() => handleDel(teacher.MaGV)} className={style["del-btn"]}>Xóa giảng viên</button></td>
                             </tr>
                         ))}
                     </tbody>

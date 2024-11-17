@@ -141,21 +141,21 @@ function ManageStudent() {
                         />
                     </div>
                     <div className={style["box3"]}>
-                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mã mới*</p>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập xã mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập xã"
                             value={xa}
                             onChange={(e) => setXa(e.target.value)}
                         />
-                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mã mới*</p>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập huyện mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập huyện"
                             value={huyen}
                             onChange={(e) => setHuyen(e.target.value)}
                         />
-                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mã mới*</p>
+                        <p style={{ marginBottom: '10px', color: 'red' }}>Nhập tỉnh mới*</p>
                         <input
                             type="text"
                             placeholder="Nhập tỉnh"
@@ -190,7 +190,7 @@ function ManageStudent() {
                                 <td>{student.TenSV}</td>
                                 <td>{student.SoDienThoai}</td>
                                 <td>{student.Email}</td>
-                                <td><button onClick={() => handleDel(student.MaSV)}>Xóa sinh viên</button></td>
+                                <td><button onClick={() => handleDel(student.MaSV)} className={style["del-btn"]}>Xóa sinh viên</button></td>
                             </tr>
                         ))}
                     </tbody>
