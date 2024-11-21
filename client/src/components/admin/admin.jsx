@@ -12,6 +12,7 @@ const Admin = () => {
     const [choosed3, setChoosed3] = useState(option2[0])
     const [choosed4, setChoosed4] = useState(option2[0])
     const [choosed5, setChoosed5] = useState(option2[0])
+    const [choosed6, setChoosed6] = useState(option2[0])
     let navigate = useNavigate()
 
     return (

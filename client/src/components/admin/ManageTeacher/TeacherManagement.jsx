@@ -54,7 +54,8 @@ function TeacherManagement() {
             try {
                 let response = await axios.post('http://localhost:8000/list_teacher');
                 console.log(response.data.resData);
-                setData(response.data.resData);
+                // setData(response.data.resData);
+                setData((prevData) => [...prevData, ...response.data.resData]);
             } catch (err) {
                 console.log(err);
                 window.alert('Lấy danh sách không thành công');

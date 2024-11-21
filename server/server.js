@@ -589,9 +589,36 @@ app.post('/add_subject', async (req, res) => {
 
         let { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy } = req.body;
 
-        const result = await sql.query(` insert into MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, TenNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy )
-values 
-('${ma}',N'${ten}', ${tinChi},'${nganh}',N'${tenN}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy}) `)
+        const result = await sql.query(`
+IF NOT EXISTS (SELECT 1 FROM NganhHoc WHERE MaNganh = '${nganh}')
+BEGIN
+    INSERT INTO NganhHoc (MaNganh, TenNganh)
+    VALUES ('${nganh}', N'${tenN}')
+END
+
+INSERT INTO MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy)
+VALUES 
+('${ma}', N'${ten}', ${tinChi}, '${nganh}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy});
+ `)
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/add_subject2', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { ma, ten, tinChi, nganh, tx1, tx2, giuaKy, cuoiKy } = req.body;
+
+        const result = await sql.query(`INSERT INTO MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy)
+VALUES 
+('${ma}', N'${ten}', ${tinChi}, '${nganh}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy});`)
         res.status(200).json({
             resData: result.recordset
         });
@@ -652,6 +679,8 @@ app.post('/update_subject', async (req, res) => {
             updateHsCuoiKy
         } = req.body;
 
+        console.log('Mã ngành là: ' + updateMaNganh);
+
         // Xây dựng câu lệnh UPDATE
         const result = await sql.query(`
             UPDATE MonHoc 
@@ -704,8 +733,11 @@ app.post('/del_class', async (req, res) => {
 
         let { id } = req.body;
 
-        const result = await sql.query(`delete from Lop
-where MaLop ='${id}'`)
+        const result = await sql.query(`BEGIN TRANSACTION;
+DELETE FROM ThoiKhoaBieu WHERE MaLop = '${id}';
+DELETE FROM Lop WHERE MaLop = '${id}';
+COMMIT TRANSACTION;
+`)
 
         res.status(200).json({
             resData: result.recordset
@@ -721,7 +753,114 @@ app.post('/list_class', async (req, res) => {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        const result = await sql.query(`select * from Lop`)
+        const result = await sql.query(`SELECT 
+    Lop.MaLop,
+    Lop.TenLop,
+    Lop.ThoiGianBatDau,
+    Lop.NgayThi,
+    Lop.ThoiGianThi,
+    NganhHoc.MaNganh,
+    COUNT(DISTINCT SinhVienTrongLop.MaSV) AS SoLuongSinhVien
+FROM 
+    Lop
+LEFT JOIN SinhVienTrongLop ON Lop.MaLop = SinhVienTrongLop.MaLop
+LEFT JOIN ThoiKhoaBieu ON Lop.MaLop = ThoiKhoaBieu.MaLop
+LEFT JOIN MonHoc ON ThoiKhoaBieu.MaMonHoc = MonHoc.MaMonHoc
+LEFT JOIN NganhHoc ON MonHoc.MaNganh = NganhHoc.MaNganh
+GROUP BY 
+    Lop.MaLop, 
+    Lop.TenLop, 
+    Lop.ThoiGianBatDau, 
+    Lop.NgayThi, 
+    Lop.ThoiGianThi,
+    NganhHoc.MaNganh;
+`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/update_class', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { newId, MaLop, MaNganh } = req.body;
+
+        console.log(newId, MaLop, MaNganh);
+
+        const result = await sql.query(`INSERT INTO SinhVienTrongLop (MaSV, TenSV, MaAdmin, MaNganh, MaLop, MaMonHoc, MaGV, TenLop, TenMonHoc)
+SELECT 
+    SinhVien.MaSV, 
+    SinhVien.TenSV, 
+    Lop.MaAdmin, 
+    '${MaNganh}' AS MaNganh, 
+    Lop.MaLop, 
+    ThoiKhoaBieu.MaMonHoc, 
+    ThoiKhoaBieu.MaGV, 
+    Lop.TenLop, 
+    MonHoc.TenMonHoc
+FROM 
+    SinhVien
+JOIN Lop ON Lop.MaLop = '${MaLop}'
+JOIN ThoiKhoaBieu ON ThoiKhoaBieu.MaLop = Lop.MaLop
+JOIN MonHoc ON MonHoc.MaMonHoc = ThoiKhoaBieu.MaMonHoc
+WHERE 
+    SinhVien.MaSV = ${newId};`)
+
+        res.status(200).json({
+            resData: result.recordset
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+    }
+});
+
+app.post('/update_class2', async (req, res) => {
+    try {
+        await sql.connect(config);
+        console.log('Kết nối thành công đến SQL Server');
+
+        let { TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2 } = req.body;
+
+        console.log(TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2);
+
+        const result = await sql.query(`INSERT INTO ThoiKhoaBieu (
+    Thu1, 
+    Thu2, 
+    MaLop, 
+    MaMonHoc, 
+    ThoiGianHoc, 
+    MaGV, 
+    MaNganh, 
+    TenLop, 
+    TenMonHoc, 
+    TenGV
+) 
+SELECT 
+    '${thu1}', 
+    '${thu2}',  
+    '${MaLop}',   
+    '${mon}',   
+    ${tg},         
+    '${gv}',   
+    MonHoc.MaNganh, 
+    '${TenLop}', 
+    MonHoc.TenMonHoc, 
+    GiangVien.TenGV 
+FROM 
+    MonHoc
+INNER JOIN 
+    GiangVien ON GiangVien.MaGV = '${gv}' 
+WHERE 
+    MonHoc.MaMonHoc = '${mon}'; 
+`)
 
         res.status(200).json({
             resData: result.recordset

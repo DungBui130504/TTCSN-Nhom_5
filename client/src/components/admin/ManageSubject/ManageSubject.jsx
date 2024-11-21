@@ -5,7 +5,7 @@ import axios from "axios";
 function ManageSubject() {
     const [ma, setMa] = useState('');
     const [ten, setTen] = useState('');
-    const [tinChi, setTinChi] = useState();
+    const [tinChi, setTinChi] = useState(0);
     const [nganh, setNganh] = useState('');
     const [tenN, setTenN] = useState('');
     const [tx1, setTx1] = useState(-1);
@@ -16,7 +16,7 @@ function ManageSubject() {
     const [check, setCheck] = useState(false);
 
     const [updateTenMonHoc, setUpdateTenMonHoc] = useState('');
-    const [updateTinChi, setUpdateTinChi] = useState('');
+    const [updateTinChi, setUpdateTinChi] = useState(0);
     const [updateMaNganh, setUpdateMaNganh] = useState('');
     const [updateTenNganh, setUpdateTenNganh] = useState('');
     const [updateHsTx1, setUpdateHsTx1] = useState(-1);
@@ -25,23 +25,26 @@ function ManageSubject() {
     const [updateHsCuoiKy, setUpdateHsCuoiKy] = useState(-1);
 
     const handleAdding = async () => {
-        if (tx1 < 0 || tx2 < 0 || giuaKy < 0 || cuoiKy < 0) {
-            window.alert('Hệ số không được âm')
-            return;
-        }
-        if (tx1 > 1 || tx2 > 1 || giuaKy > 1 || cuoiKy > 1) {
-            window.alert('Hệ số không lớn hơn 1')
-            return;
-        }
-        if (ma == '' || ten == '' || tinChi == '' || nganh == '' || tenN == '' || tx1 == -1 || tx2 == -1 || giuaKy == -1 || cuoiKy == -1) {
-            window.alert('Phải nhập đầy đủ thông tin môn học!')
-            return;
-        }
-
         try {
-            let response = await axios.post('http://localhost:8000/add_subject', { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy });
-            console.log(response.data);
-            setCheck(!check); // Cập nhật lại danh sách sau khi thêm
+            if (tx1 < 0 || tx2 < 0 || giuaKy < 0 || cuoiKy < 0 || tinChi < 0) {
+                window.alert('Hệ số và tín chỉ không được âm')
+                return;
+            }
+            if (tx1 > 1 || tx2 > 1 || giuaKy > 1 || cuoiKy > 1 || tinChi > 10) {
+                window.alert('Hệ số không lớn hơn 1, tín chỉ không lớn hơn 10!')
+                return;
+            }
+            if (ma == '' || ten == '' || tinChi == 0 || nganh == '' || tx1 == -1 || tx2 == -1 || giuaKy == -1 || cuoiKy == -1) {
+                window.alert('Phải nhập đầy đủ thông tin môn học!')
+                return;
+            }
+            if (tenN == '') {
+                let response1 = await axios.post('http://localhost:8000/add_subject2', { ma, ten, tinChi, nganh, tx1, tx2, giuaKy, cuoiKy });
+            }
+            else {
+                let response2 = await axios.post('http://localhost:8000/add_subject', { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy });
+            }
+            setCheck(!check);
             window.alert('Thêm thành công!')
         }
         catch (err) {
@@ -65,14 +68,14 @@ function ManageSubject() {
 
     const handleUpdate = async (MaMonHoc, i) => {
         try {
-            // console.log(data[i]);
+            console.log(data[i].MaNganh);
 
             if (updateTenMonHoc === '') {
                 setUpdateTenMonHoc(data[i].TenMonHoc);
             }
 
-            if (updateTinChi === '') {
-                setUpdateTinChi(data[i].TinChi);
+            if (updateTinChi === 0) {
+                setUpdateTinChi(Number(data[i].TinChi));
             }
 
             if (updateMaNganh === '') {
@@ -98,9 +101,6 @@ function ManageSubject() {
             if (updateHsCuoiKy === -1) {
                 setUpdateHsCuoiKy(data[i].HsCuoiKy);
             }
-
-            // console.log(MaMonHoc, updateTenMonHoc, updateTinChi, updateMaNganh, updateTenNganh, updateHsTx1, updateHsTx2, updateHsGiuaKy, updateHsCuoiKy);
-
 
             let response = await axios.post('http://localhost:8000/update_subject', { MaMonHoc, updateTenMonHoc, updateTinChi, updateMaNganh, updateTenNganh, updateHsTx1, updateHsTx2, updateHsGiuaKy, updateHsCuoiKy });
             window.alert('Sửa thành công!')
@@ -242,9 +242,9 @@ function ManageSubject() {
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder={subject.TinChi}
-                                        onChange={(e) => setUpdateTinChi(e.target.value)}
+                                        onChange={(e) => setUpdateTinChi(Number(e.target.value))}
                                     />
                                 </td>
                                 <td>
@@ -264,28 +264,28 @@ function ManageSubject() {
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder={subject.HsTx1}
                                         onChange={(e) => setUpdateHsTx1(e.target.value)}
                                     />
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder={subject.HsTx2}
                                         onChange={(e) => setUpdateHsTx2(e.target.value)}
                                     />
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder={subject.HsGiuaKy}
                                         onChange={(e) => setUpdateHsGiuaKy(e.target.value)}
                                     />
                                 </td>
                                 <td>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder={subject.HsCuoiKy}
                                         onChange={(e) => setUpdateHsCuoiKy(e.target.value)}
                                     />

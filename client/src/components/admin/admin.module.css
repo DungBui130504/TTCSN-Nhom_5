@@ -85,7 +85,7 @@
 }
 
 .teacher-nav>li>a {
-    display: block;
+    /* display: block; */
     width: 100%;
     height: 100%;
 }

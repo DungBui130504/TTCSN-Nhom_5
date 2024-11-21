@@ -87,7 +87,6 @@ function TeacherTimeTable() {
 
     useEffect(() => {
         const myTable = document.getElementById('teacherTable');
-
         const updateTable = (dayData, columnIndex) => {
             for (let i = 0; i < dayData.length; i++) {
                 if (dayData[i].ThoiGianHoc === 1) {
