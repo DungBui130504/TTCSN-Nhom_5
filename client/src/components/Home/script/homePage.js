@@ -94,7 +94,7 @@ function HomePage({ sendData }) {
                         // console.log(`Du lieu tu bang SinhVien: ${response1.data.student}`);
                         localStorage.setItem('id', response1.data.student[0].MaSV)
                         // console.log(response1.data.student[0].MaSV);
-                        
+
 
                         if (response1.data.check == 1) {
                             console.log('Dang nhap tai khoan sinh vien thanh cong!');
@@ -156,6 +156,9 @@ function HomePage({ sendData }) {
 
     return (
         <div id="wrapper">
+            <p className="extra">Sinh viên: tk: 'sinhvien8' ; mk: 'sv123@'</p>
+            <p className="extra x">Giảng viên: tk: 'gv06' ; mk: 'gvpassword6'</p>
+            <p className="extra y">Admin: tk: 'nhom8' ; mk: '123'</p>
             <div id="login-wrapper">
                 <div className="left-side" id="left">
                     <div className="img" id="pic"></div>

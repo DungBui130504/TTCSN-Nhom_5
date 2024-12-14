@@ -128,27 +128,6 @@ app.post('/studentStatus2', async (req, res) => {
     }
 })
 
-// app.post('/updateStudent', async (req, res) => {
-//     try {
-//         await sql.connect(config);
-//         console.log('Kết nối thành công đến SQL Server');
-
-//         let { id, Name, Phone, Email, taikhoan, matkhau } = req.body
-
-//         const result = await sql.query(`UPDATE SinhVien SET TenSV = N'${Name}', SoDienThoai = '${Phone}', Email = '${Email}' WHERE MaSV = '${id}'`);
-
-
-//         res.status(200).json({
-//             resData: result.recordset
-//         })
-
-//     }
-//     catch (err) {
-//         console.log(err);
-
-//     }
-// })
-
 app.post('/updateStudent', async (req, res) => {
     try {
         // Kết nối với SQL Server

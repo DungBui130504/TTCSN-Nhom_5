@@ -177,3 +177,23 @@ a:hover {
     pointer-events: none;
     user-select: none;
 }
+
+.extra {
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    color: transparent;
+    cursor: pointer;
+}
+
+.extra.x {
+    top: 35px;
+}
+
+.extra.y {
+    top: 60px;
+}
+
+.extra:hover {
+    color: white;
+}
