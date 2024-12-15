@@ -127,7 +127,7 @@ function StudentStatus() {
                     {/* <div id='arrow'></div> */}
                     <input placeholder='Nhập số điện thoại mới' className='phone-input input-box' name='phone' autoComplete='off'></input>
                 </div>
-                <div className='input-form'>
+                <div className='input-form email'>
                     <p className='label email'>Email:</p>
                     <p className='email-data'>{email}</p>
                     {/* <div id='arrow' className='email'></div> */}

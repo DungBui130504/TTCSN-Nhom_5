@@ -17,19 +17,52 @@ function TeacherManagement() {
     const [check, setCheck] = useState(false);
 
     const handleAdding = async () => {
+        const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+        const regex2 = /^0\d{9}$/;
+        ;
+
         if (ma == '' || ten == '' || tk == '' || mk == '') {
             window.alert('Không để trống mã, tên, tài khoản và mật khẩu')
             return;
         }
-        if (sdt == '' || email == '') {
+        if (sdt == '' && email == '') {
             window.alert('Cần ít nhất 1 phương thức liên lạc')
             return;
+        }
+        if (xa == '') {
+            setXa('chưa đặt');
+        }
+        if (huyen == '') {
+            setHuyen('chưa đặt');
+        }
+        if (tinh == '') {
+            setTinh('chưa đặt');
+        }
+        if (ngaySinh == '') {
+            setNgaySinh('2024-12-15');
+        }
+        if (regex.test(ngaySinh) == false && ngaySinh != '') {
+            window.alert('Định dạng ngày sinh phải theo mẫu: YYYY-MM-DD')
+            return;
+        }
+        if (sdt == '') {
+            setSdt('chưa đặt');
+        }
+        if (sdt != '' && regex2.test(sdt) == false) {
+            window.alert('Số điện thoại phải đủ 10 chữ số và bắt đầu bằng 0')
+            return;
+        }
+        if (email == '') {
+            setEmail('chưa đặt');
         }
 
         try {
             let response = await axios.post('http://localhost:8000/add_teacher', { ma, ten, tk, mk, xa, huyen, tinh, sdt, email, ngaySinh });
             console.log(response.data);
             setCheck(!check); // Cập nhật lại danh sách sau khi Nhập
+            window.alert('Thêm thành công!');
+            window.location.reload();
+
         }
         catch (err) {
             console.log(err);
@@ -42,6 +75,9 @@ function TeacherManagement() {
             let response = await axios.post('http://localhost:8000/del_teacher', { id: maGV });
             console.log(response.data);
             setCheck(!check); // Cập nhật lại danh sách sau khi xóa
+            window.alert('Xóa thành công!');
+            window.location.reload();
+
         }
         catch (err) {
             console.log(err);

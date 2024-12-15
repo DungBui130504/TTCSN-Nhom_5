@@ -12,6 +12,7 @@ function UpdateMark() {
     const handleOnclick = async () => {
         try {
             let response = await axios.post('http://localhost:8000/search_class', { classId, id });
+            // console.log(response.data);
             setData(response.data.resData);
             setHadGetStudent(response.data.resData.length > 0);
         } catch (error) {

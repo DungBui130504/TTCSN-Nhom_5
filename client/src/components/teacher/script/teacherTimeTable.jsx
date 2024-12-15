@@ -10,12 +10,13 @@ function TeacherTimeTable() {
     const [thu6, setThu6] = useState([]);
     const [thu7, setThu7] = useState([]);
     const [chunhat, setChunhat] = useState([]);
+    const [lopHuy, setLopHuy] = useState([]);
     const id = localStorage.getItem('id')
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             let response = await axios.post('http://localhost:8000/teacher_timetable', { id });
-            // console.log(response.data.resData);
             const newThu2Data = [];
             const newThu3Data = [];
             const newThu4Data = [];
@@ -23,6 +24,12 @@ function TeacherTimeTable() {
             const newThu6Data = [];
             const newThu7Data = [];
             const newChuNhatData = [];
+            const newLopHuy = [];
+            for (let i = 0; i < response.data.resData.length; i++) {
+                if (response.data.resData[i].SoLuongSinhVien < 35) {
+                    newLopHuy.push(response.data.resData[i].TenLop)
+                }
+            }
             for (let i = 0; i < response.data.resData.length; i++) {
                 if (response.data.resData[i].Thu1 == 'Thứ 2' || response.data.resData[i].Thu2 == 'Thứ 2') {
                     const data = {
@@ -74,6 +81,7 @@ function TeacherTimeTable() {
                     newChuNhatData.push(data);
                 }
             }
+            setLopHuy(newLopHuy);
             setThu2(newThu2Data);
             setThu3(newThu3Data);
             setThu4(newThu4Data);
@@ -81,6 +89,7 @@ function TeacherTimeTable() {
             setThu6(newThu6Data);
             setThu7(newThu7Data);
             setChunhat(newChuNhatData);
+            setIsDataLoaded(true);
         }
         fetchData()
     }, [])
@@ -90,13 +99,31 @@ function TeacherTimeTable() {
         const updateTable = (dayData, columnIndex) => {
             for (let i = 0; i < dayData.length; i++) {
                 if (dayData[i].ThoiGianHoc === 1) {
-                    myTable.rows[1].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
+                    myTable.rows[1].cells[columnIndex].innerHTML += `${dayData[i].TenLop}`;
+                    lopHuy.forEach(element => {
+                        if (myTable.rows[1].cells[columnIndex].innerHTML === element) {
+                            //doi kieu chu in ra thanh chu gach ngang
+                            myTable.rows[1].cells[columnIndex].innerHTML += '(đã hủy)';
+                        }
+                    });
                 }
                 if (dayData[i].ThoiGianHoc === 2) {
-                    myTable.rows[2].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
+                    myTable.rows[2].cells[columnIndex].innerHTML += `${dayData[i].TenLop}`;
+                    lopHuy.forEach(element => {
+                        if (myTable.rows[2].cells[columnIndex].innerHTML === element) {
+                            //doi kieu chu in ra thanh chu gach ngang
+                            myTable.rows[2].cells[columnIndex].innerHTML += ' (đã hủy)';
+                        }
+                    });
                 }
                 if (dayData[i].ThoiGianHoc === 3) {
-                    myTable.rows[3].cells[columnIndex].innerHTML += `${dayData[i].TenLop} <br/>`;
+                    myTable.rows[3].cells[columnIndex].innerHTML += `${dayData[i].TenLop}`;
+                    lopHuy.forEach(element => {
+                        if (myTable.rows[3].cells[columnIndex].innerHTML === element) {
+                            //doi kieu chu in ra thanh chu gach ngang
+                            myTable.rows[3].cells[columnIndex].innerHTML += '(đã hủy)';
+                        }
+                    });
                 }
             }
         };
@@ -109,7 +136,8 @@ function TeacherTimeTable() {
         if (thu7.length > 0) updateTable(thu7, 6);
         if (chunhat.length > 0) updateTable(chunhat, 7);
 
-    }, [thu2, thu3, thu4, thu5, thu6, thu7, chunhat]);
+    }, [thu2, thu3, thu4, thu5, thu6, thu7, chunhat, isDataLoaded]);
+
 
     return (
         <div id={style['time-table-container']}>

@@ -5,13 +5,13 @@ import axios from "axios";
 function ManageSubject() {
     const [ma, setMa] = useState('');
     const [ten, setTen] = useState('');
-    const [tinChi, setTinChi] = useState(0);
+    const [tinChi, setTinChi] = useState();
     const [nganh, setNganh] = useState('');
     const [tenN, setTenN] = useState('');
-    const [tx1, setTx1] = useState(-1);
-    const [tx2, setTx2] = useState(-1);
-    const [giuaKy, setGiuaKy] = useState(-1);
-    const [cuoiKy, setCuoiKy] = useState(-1);
+    const [tx1, setTx1] = useState();
+    const [tx2, setTx2] = useState();
+    const [giuaKy, setGiuaKy] = useState();
+    const [cuoiKy, setCuoiKy] = useState();
     const [data, setData] = useState([]);
     const [check, setCheck] = useState(false);
 
@@ -38,12 +38,12 @@ function ManageSubject() {
                 window.alert('Phải nhập đầy đủ thông tin môn học!')
                 return;
             }
-            if (tenN == '') {
-                let response1 = await axios.post('http://localhost:8000/add_subject2', { ma, ten, tinChi, nganh, tx1, tx2, giuaKy, cuoiKy });
+            if ((tx1 + tx2 + giuaKy + cuoiKy) != 1) {
+                window.alert('Các hệ số điểm phải có tổng là 1!')
+                return;
             }
-            else {
-                let response2 = await axios.post('http://localhost:8000/add_subject', { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy });
-            }
+
+            let response = await axios.post('http://localhost:8000/add_subject', { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy });
             setCheck(!check);
             window.alert('Thêm thành công!')
         }
@@ -68,7 +68,7 @@ function ManageSubject() {
 
     const handleUpdate = async (MaMonHoc, i) => {
         try {
-            console.log(data[i].MaNganh);
+            console.log(data[i]);
 
             if (updateTenMonHoc === '') {
                 setUpdateTenMonHoc(data[i].TenMonHoc);
@@ -100,6 +100,10 @@ function ManageSubject() {
 
             if (updateHsCuoiKy === -1) {
                 setUpdateHsCuoiKy(data[i].HsCuoiKy);
+            }
+            if ((Number(updateHsTx1) + Number(updateHsTx2) + Number(updateHsGiuaKy) + Number(updateHsCuoiKy)) != 1) {
+                window.alert('Các hệ số điểm phải có tổng là 1!')
+                return;
             }
 
             let response = await axios.post('http://localhost:8000/update_subject', { MaMonHoc, updateTenMonHoc, updateTinChi, updateMaNganh, updateTenNganh, updateHsTx1, updateHsTx2, updateHsGiuaKy, updateHsCuoiKy });

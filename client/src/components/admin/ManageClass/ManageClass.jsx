@@ -16,6 +16,8 @@ function ManageClass() {
     const [tg, setTg] = useState(0)
     const [mon, setMon] = useState('')
     const [gv, setGv] = useState('')
+    const [maN, setMaN] = useState('')
+    const [tenN, setTenN] = useState('')
 
     const handleAdding = async () => {
         try {
@@ -58,11 +60,11 @@ function ManageClass() {
 
     const handleUpdate = async (MaLop, MaNganh) => {
         try {
-            if (MaNganh == null) {
-                window.alert('Lớp chưa thuộc ngành nào!')
-                return
-            }
-            let response = await axios.post('http://localhost:8000/update_class', { newId, MaLop, MaNganh });
+            // if (MaNganh == null) {
+            //     window.alert('Lớp chưa thuộc ngành nào!')
+            //     return
+            // }
+            let response = await axios.post('http://localhost:8000/update_class', { newId, MaLop });
             window.alert('Cập nhật thành công')
             window.location.reload()
         } catch (error) {
@@ -98,7 +100,7 @@ function ManageClass() {
                 window.alert('Thời gian học chỉ nhập 1, 2 hoặc 3')
                 return
             }
-            let response = await axios.post('http://localhost:8000/update_class2', { TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2 });
+            let response = await axios.post('http://localhost:8000/update_class2', { TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2, maN });
             console.log(response);
             window.alert('Cập nhật thành công')
         } catch (error) {
@@ -111,7 +113,7 @@ function ManageClass() {
         const list = async () => {
             try {
                 let response = await axios.post('http://localhost:8000/list_class');
-                // console.log(response.data.resData);
+                console.log(response.data.resData);
                 setData(response.data.resData);
             } catch (err) {
                 console.log(err);
@@ -285,8 +287,22 @@ function ManageClass() {
                         // value={tg}
                         onChange={(e) => setGv(e.target.value)}
                     />
+                    <p style={{ marginBottom: '10px', color: 'red' }}>Nhập mã ngành*</p>
+                    <input
+                        type="text"
+                        placeholder="Nhập mã ngành"
+                        // value={tg}
+                        onChange={(e) => setMaN(e.target.value)}
+                    />
+                    {/* <p style={{ marginBottom: '10px', color: 'red' }}>Nhập tên ngành*</p>
+                    <input
+                        type="text"
+                        placeholder="Nhập tên ngành"
+                        // value={tg}
+                        onChange={(e) => setTenN(e.target.value)}
+                    /> */}
                 </div>
-                <button className={style['add']} onClick={handleUpdate2} style={{ position: 'absolute', bottom: '200px', left: '470px' }}>Cập nhật</button>
+                <button className={style['add']} onClick={handleUpdate2} style={{ position: 'absolute', bottom: '80px', left: '470px' }}>Cập nhật</button>
             </div>
         </div>
     )

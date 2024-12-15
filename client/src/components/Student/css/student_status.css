@@ -62,7 +62,7 @@
 .email-data {
     width: 250px;
     height: 30px;
-    padding-left: 165px;
+    padding-left: 95px;
 }
 
 .birth-data {
@@ -270,4 +270,8 @@
 
 .xa, .huyen, .tinh {
     padding-bottom: 10px;
+}
+
+.input-form.email {
+    justify-content: space-evenly;
 }

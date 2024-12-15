@@ -361,11 +361,27 @@ app.post('/subject_teacher', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`select N.MaNganh,N.MaMonHoc, N.TenMonHoc, Lop.MaLop, Lop.TenLop, Lop.NgayThi, Lop.ThoiGianThi, count(distinct MaSV) as SoLuong from Lop
-join SinhVienTrongLop N
-on Lop.MaLop = N.MaLop
-where N.MaGV='${id}'
-group by N.MaNganh,N.MaMonHoc, N.TenMonHoc, Lop.MaLop, Lop.TenLop, Lop.NgayThi, Lop.ThoiGianThi`);
+        const result = await sql.query(`SELECT 
+    N.MaNganh,
+    N.MaMonHoc, 
+    N.TenMonHoc, 
+    Lop.MaLop, 
+    Lop.TenLop, 
+    Lop.NgayThi, 
+    Lop.ThoiGianThi, 
+    COUNT(DISTINCT N.MaSV) AS SoLuong
+FROM Lop
+JOIN SinhVienTrongLop N ON Lop.MaLop = N.MaLop
+WHERE N.MaGV = '${id}'
+GROUP BY 
+    N.MaNganh, 
+    N.MaMonHoc, 
+    N.TenMonHoc, 
+    Lop.MaLop, 
+    Lop.TenLop, 
+    Lop.NgayThi, 
+    Lop.ThoiGianThi;
+`);
 
         res.status(200).json({
             resData: result.recordset
@@ -385,7 +401,21 @@ app.post('/teacher_timetable', async (req, res) => {
 
         let { id } = req.body
 
-        const result = await sql.query(`select Thu1, Thu2, ThoiGianHoc, TenLop from ThoiKhoaBieu where MaGV ='${id}'`);
+        const result = await sql.query(`SELECT 
+    TKB.Thu1, 
+    TKB.Thu2, 
+    TKB.ThoiGianHoc, 
+    TKB.TenLop,
+    COUNT(SVTL.MaSV) AS SoLuongSinhVien
+FROM ThoiKhoaBieu TKB
+LEFT JOIN SinhVienTrongLop SVTL ON TKB.MaLop = SVTL.MaLop
+WHERE TKB.MaGV = '${id}'
+GROUP BY 
+    TKB.Thu1, 
+    TKB.Thu2, 
+    TKB.ThoiGianHoc, 
+    TKB.TenLop;
+`);
 
         res.status(200).json({
             resData: result.recordset
@@ -446,7 +476,11 @@ app.post('/search_class', async (req, res) => {
 
         console.log(classId, id);
 
-        const result = await sql.query(`select distinct  D.MaLop,D.TenLop,D.MaSV, S.TenSV, D.DiemTx1, D.DiemTx2,D.DiemGiuaKy,D.DiemCuoiKy from Diem D join SinhVienTrongLop S on D.MaSV=S.MaSV where D.MaLop='${classId}' and D.MaGV='${id}'`)
+        const result = await sql.query(`SELECT DISTINCT D.MaLop, D.TenLop, D.MaSV, S.TenSV, D.DiemTx1, D.DiemTx2, D.DiemGiuaKy, D.DiemCuoiKy
+FROM Diem D
+JOIN SinhVienTrongLop S ON D.MaSV = S.MaSV
+WHERE D.MaLop = '${classId}' AND D.MaGV = '${id}'
+`)
 
         res.status(200).json({
             resData: result.recordset
@@ -566,19 +600,40 @@ app.post('/add_subject', async (req, res) => {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
+        // Lấy dữ liệu từ request body
         let { ma, ten, tinChi, nganh, tenN, tx1, tx2, giuaKy, cuoiKy } = req.body;
 
-        const result = await sql.query(`
-IF NOT EXISTS (SELECT 1 FROM NganhHoc WHERE MaNganh = '${nganh}')
-BEGIN
-    INSERT INTO NganhHoc (MaNganh, TenNganh)
-    VALUES ('${nganh}', N'${tenN}')
-END
+        console.log(tenN);
 
-INSERT INTO MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy)
-VALUES 
-('${ma}', N'${ten}', ${tinChi}, '${nganh}', ${tx1}, ${tx2}, ${giuaKy}, ${cuoiKy});
- `)
+        // Tạo đối tượng request để truyền tham số
+        const request = new sql.Request();
+
+        // Khai báo các tham số
+        request.input('MaNganh', sql.NVarChar, nganh);
+        request.input('TenNganh', sql.NVarChar, tenN);
+        request.input('MaMonHoc', sql.NVarChar, ma);
+        request.input('TenMonHoc', sql.NVarChar, ten);
+        request.input('TinChi', sql.Int, tinChi);
+        request.input('HsTx1', sql.Float, tx1);
+        request.input('HsTx2', sql.Float, tx2);
+        request.input('HsGiuaKy', sql.Float, giuaKy);
+        request.input('HsCuoiKy', sql.Float, cuoiKy);
+
+        // Thực hiện truy vấn
+        const result = await request.query(`
+            -- Kiểm tra nếu ngành chưa tồn tại thì thêm mới ngành vào bảng NganhHoc
+            IF NOT EXISTS (SELECT 1 FROM NganhHoc WHERE MaNganh = @MaNganh)
+            BEGIN
+                INSERT INTO NganhHoc (MaNganh, TenNganh)
+                VALUES (@MaNganh, @TenNganh)
+            END
+
+            -- Thêm môn học vào bảng MonHoc
+            INSERT INTO MonHoc (MaMonHoc, TenMonHoc, TinChi, MaNganh, HsTx1, HsTx2, HsGiuaKy, HsCuoiKy)
+            VALUES (@MaMonHoc, @TenMonHoc, @TinChi, @MaNganh, @HsTx1, @HsTx2, @HsGiuaKy, @HsCuoiKy);
+        `);
+
+        // Trả về kết quả
         res.status(200).json({
             resData: result.recordset
         });
@@ -587,6 +642,8 @@ VALUES
         res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
     }
 });
+
+
 
 app.post('/add_subject2', async (req, res) => {
     try {
@@ -630,7 +687,19 @@ app.post('/list_subject', async (req, res) => {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        const result = await sql.query(`select * from MonHoc`)
+        const result = await sql.query(`SELECT 
+    m.MaMonHoc, 
+    m.TenMonHoc, 
+    m.TinChi, 
+    m.MaNganh, 
+    n.TenNganh,  -- Lấy tên ngành từ bảng NganhHoc
+    m.HsTx1, 
+    m.HsTx2, 
+    m.HsGiuaKy, 
+    m.HsCuoiKy
+FROM MonHoc m
+JOIN NganhHoc n ON m.MaNganh = n.MaNganh;
+`)
 
         res.status(200).json({
             resData: result.recordset
@@ -658,32 +727,31 @@ app.post('/update_subject', async (req, res) => {
             updateHsCuoiKy
         } = req.body;
 
-        console.log('Mã ngành là: ' + updateMaNganh);
-
-        // Xây dựng câu lệnh UPDATE
-        const result = await sql.query(`
-            UPDATE MonHoc 
-            SET 
-                TenMonHoc = '${updateTenMonHoc}', 
-                TinChi = '${updateTinChi}', 
-                MaNganh = '${updateMaNganh}', 
-                TenNganh = '${updateTenNganh}', 
-                HsTx1 = '${updateHsTx1}', 
-                HsTx2 = '${updateHsTx2}', 
-                HsGiuaKy = '${updateHsGiuaKy}', 
-                HsCuoiKy = '${updateHsCuoiKy}' 
-            WHERE MaMonHoc = '${MaMonHoc}'
-        `);
+        const result = await sql.query(`                    
+            UPDATE MonHoc
+                    SET 
+                        TenMonHoc = N'${updateTenMonHoc}', 
+                        TinChi = ${updateTinChi}, 
+                        MaNganh = '${updateMaNganh}', 
+                        HsTx1 = ${updateHsTx1}, 
+                        HsTx2 = ${updateHsTx2}, 
+                        HsGiuaKy = ${updateHsGiuaKy}, 
+                        HsCuoiKy = ${updateHsCuoiKy}
+                    WHERE MaMonHoc = '${MaMonHoc}'
+            UPDATE NganhHoc
+                SET TenNganh = N'${updateTenNganh}'
+                WHERE MaNganh = '${updateMaNganh}'`)
 
         res.status(200).json({
-            message: 'Cập nhật thành công!',
             resData: result.recordset
         });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
+        res.status(500).json({ error: "Có lỗi xảy ra khi kết nối đến cơ sở dữ liệu" });
     }
 });
+
+
 
 app.post('/add_class', async (req, res) => {
     try {
@@ -732,28 +800,29 @@ app.post('/list_class', async (req, res) => {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        const result = await sql.query(`SELECT 
-    Lop.MaLop,
-    Lop.TenLop,
-    Lop.ThoiGianBatDau,
-    Lop.NgayThi,
-    Lop.ThoiGianThi,
-    NganhHoc.MaNganh,
-    COUNT(DISTINCT SinhVienTrongLop.MaSV) AS SoLuongSinhVien
-FROM 
-    Lop
-LEFT JOIN SinhVienTrongLop ON Lop.MaLop = SinhVienTrongLop.MaLop
-LEFT JOIN ThoiKhoaBieu ON Lop.MaLop = ThoiKhoaBieu.MaLop
-LEFT JOIN MonHoc ON ThoiKhoaBieu.MaMonHoc = MonHoc.MaMonHoc
-LEFT JOIN NganhHoc ON MonHoc.MaNganh = NganhHoc.MaNganh
-GROUP BY 
-    Lop.MaLop, 
-    Lop.TenLop, 
-    Lop.ThoiGianBatDau, 
-    Lop.NgayThi, 
-    Lop.ThoiGianThi,
-    NganhHoc.MaNganh;
-`)
+        const result = await sql.query(`
+            SELECT 
+                Lop.MaLop,
+                Lop.TenLop,
+                Lop.ThoiGianBatDau,
+                Lop.NgayThi,
+                Lop.ThoiGianThi,
+                NganhHoc.MaNganh,  -- Lấy mã ngành từ bảng NganhHoc
+                COUNT(DISTINCT SinhVienTrongLop.MaSV) AS SoLuongSinhVien
+            FROM 
+                Lop
+            LEFT JOIN SinhVienTrongLop ON Lop.MaLop = SinhVienTrongLop.MaLop
+            LEFT JOIN ThoiKhoaBieu ON Lop.MaLop = ThoiKhoaBieu.MaLop
+            LEFT JOIN MonHoc ON ThoiKhoaBieu.MaMonHoc = MonHoc.MaMonHoc
+            LEFT JOIN NganhHoc ON MonHoc.MaNganh = NganhHoc.MaNganh  
+            GROUP BY 
+                Lop.MaLop, 
+                Lop.TenLop, 
+                Lop.ThoiGianBatDau, 
+                Lop.NgayThi, 
+                Lop.ThoiGianThi,
+                NganhHoc.MaNganh;  -- Lấy MaNganh từ bảng NganhHoc
+        `);
 
         res.status(200).json({
             resData: result.recordset
@@ -763,34 +832,36 @@ GROUP BY
         res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
     }
 });
+
 
 app.post('/update_class', async (req, res) => {
     try {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        let { newId, MaLop, MaNganh } = req.body;
+        let { newId, MaLop } = req.body;
 
-        console.log(newId, MaLop, MaNganh);
+        console.log(newId, MaLop);
 
-        const result = await sql.query(`INSERT INTO SinhVienTrongLop (MaSV, TenSV, MaAdmin, MaNganh, MaLop, MaMonHoc, MaGV, TenLop, TenMonHoc)
-SELECT 
-    SinhVien.MaSV, 
-    SinhVien.TenSV, 
-    Lop.MaAdmin, 
-    '${MaNganh}' AS MaNganh, 
-    Lop.MaLop, 
-    ThoiKhoaBieu.MaMonHoc, 
-    ThoiKhoaBieu.MaGV, 
-    Lop.TenLop, 
-    MonHoc.TenMonHoc
-FROM 
-    SinhVien
-JOIN Lop ON Lop.MaLop = '${MaLop}'
-JOIN ThoiKhoaBieu ON ThoiKhoaBieu.MaLop = Lop.MaLop
-JOIN MonHoc ON MonHoc.MaMonHoc = ThoiKhoaBieu.MaMonHoc
-WHERE 
-    SinhVien.MaSV = ${newId};`)
+        const result = await sql.query(`
+            INSERT INTO SinhVienTrongLop (MaSV, TenSV, MaAdmin, MaLop, MaMonHoc, MaGV, TenLop, TenMonHoc)
+            SELECT 
+                SinhVien.MaSV, 
+                SinhVien.TenSV, 
+                Lop.MaAdmin, 
+                Lop.MaLop, 
+                ThoiKhoaBieu.MaMonHoc, 
+                ThoiKhoaBieu.MaGV, 
+                Lop.TenLop, 
+                MonHoc.TenMonHoc
+            FROM 
+                SinhVien
+            JOIN Lop ON Lop.MaLop = '${MaLop}'
+            JOIN ThoiKhoaBieu ON ThoiKhoaBieu.MaLop = Lop.MaLop
+            JOIN MonHoc ON MonHoc.MaMonHoc = ThoiKhoaBieu.MaMonHoc
+            WHERE 
+                SinhVien.MaSV = ${newId};
+        `);
 
         res.status(200).json({
             resData: result.recordset
@@ -800,46 +871,94 @@ WHERE
         res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
     }
 });
+
+
+
 
 app.post('/update_class2', async (req, res) => {
     try {
         await sql.connect(config);
         console.log('Kết nối thành công đến SQL Server');
 
-        let { TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2 } = req.body;
+        let { TenLop, MaLop, maN, mon, gv, tg, thu1, thu2 } = req.body;
 
-        console.log(TenLop, MaLop, MaNganh, mon, gv, tg, thu1, thu2);
+        console.log(TenLop, MaLop, maN, mon, gv, tg, thu1, thu2);
 
-        const result = await sql.query(`INSERT INTO ThoiKhoaBieu (
-    Thu1, 
-    Thu2, 
-    MaLop, 
-    MaMonHoc, 
-    ThoiGianHoc, 
-    MaGV, 
-    MaNganh, 
-    TenLop, 
-    TenMonHoc, 
-    TenGV
-) 
-SELECT 
-    '${thu1}', 
-    '${thu2}',  
-    '${MaLop}',   
-    '${mon}',   
-    ${tg},         
-    '${gv}',   
-    MonHoc.MaNganh, 
-    '${TenLop}', 
-    MonHoc.TenMonHoc, 
-    GiangVien.TenGV 
-FROM 
-    MonHoc
-INNER JOIN 
-    GiangVien ON GiangVien.MaGV = '${gv}' 
-WHERE 
-    MonHoc.MaMonHoc = '${mon}'; 
-`)
+        // Khai báo tham số SQL
+        const request = new sql.Request();
+        request.input('maN', sql.NVarChar, maN);
+        request.input('MaLop', sql.NVarChar, MaLop);
+        request.input('TenLop', sql.NVarChar, TenLop);
+        request.input('thu1', sql.NVarChar, thu1);
+        request.input('thu2', sql.NVarChar, thu2);
+        request.input('mon', sql.NVarChar, mon);
+        request.input('gv', sql.NVarChar, gv);
+        request.input('tg', sql.Int, tg);
+
+        // Kiểm tra nếu ngành học chưa có trong bảng NganhHoc
+        const checkNganhHoc = await request.query(`
+            SELECT COUNT(*) AS Count 
+            FROM NganhHoc 
+            WHERE MaNganh = @maN
+        `);
+
+        if (checkNganhHoc.recordset[0].Count === 0) {
+            return res.status(400).json({ error: "Ngành học chưa có trong cơ sở dữ liệu. Vui lòng tạo ngành trước." });
+        }
+
+        // Kiểm tra nếu lớp học chưa có trong bảng Lop
+        const checkLop = await request.query(`
+            SELECT COUNT(*) AS Count, MaNganh 
+            FROM Lop 
+            WHERE MaLop = @MaLop
+            GROUP BY MaNganh
+        `);
+
+        if (checkLop.recordset[0].Count === 0) {
+            // Nếu lớp học chưa có, chèn lớp vào bảng Lop và liên kết với ngành
+            await request.query(`
+                INSERT INTO Lop (MaLop, TenLop, MaNganh)
+                VALUES (@MaLop, @TenLop, @maN)
+            `);
+        } else {
+            // Nếu lớp đã tồn tại và chưa thuộc ngành, cập nhật ngành cho lớp
+            if (!checkLop.recordset[0].MaNganh) {
+                await request.query(`
+                    UPDATE Lop
+                    SET MaNganh = @maN
+                    WHERE MaLop = @MaLop
+                `);
+            }
+        }
+
+        // Chèn thời khóa biểu vào bảng ThoiKhoaBieu
+        const result = await request.query(`
+            INSERT INTO ThoiKhoaBieu (
+                Thu1, 
+                Thu2, 
+                MaLop, 
+                MaMonHoc, 
+                ThoiGianHoc, 
+                MaGV, 
+                MaNganh, 
+                TenLop
+            ) 
+            SELECT 
+                @thu1, 
+                @thu2,  
+                @MaLop,   
+                @mon,   
+                @tg,         
+                @gv,   
+                MonHoc.MaNganh, 
+                @TenLop 
+            FROM 
+                MonHoc
+            INNER JOIN 
+                GiangVien ON GiangVien.MaGV = @gv 
+            WHERE 
+                MonHoc.MaMonHoc = @mon;
+        `);
 
         res.status(200).json({
             resData: result.recordset
@@ -849,6 +968,10 @@ WHERE
         res.status(500).json({ error: "Có lỗi xảy ra khi cập nhật dữ liệu" });
     }
 });
+
+
+
+
 
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);
